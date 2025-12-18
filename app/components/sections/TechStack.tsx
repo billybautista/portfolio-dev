@@ -154,7 +154,6 @@ const TechStack = () => {
             start: "top 15%",
             end: "top 0%",
             scrub: 0.5,
-            markers: true,
           },
         });
       }
