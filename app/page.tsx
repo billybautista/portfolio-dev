@@ -1,7 +1,9 @@
 import Marquee from "./components/Marquee";
 import About from "./components/sections/About";
 import Hero from "./components/sections/Hero";
+import Philosophy from "./components/sections/Philosophy";
 import Stats from "./components/sections/Stats";
+import TechStack from "./components/sections/TechStack";
 
 export default function Home() {
   return (
@@ -10,6 +12,8 @@ export default function Home() {
       <Stats />
       <About />
       <Marquee />
+      <TechStack />
+      <Philosophy />
     </main>
   );
 }
