@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "./components/Footer";
+import GSAPProvider from "./components/GSAPProvider";
 import Navbar from "./components/Navbar";
 import "./globals.css";
 
@@ -42,9 +43,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
+        <GSAPProvider>
+          <Navbar />
+          <main className="min-h-screen mx-auto px-6 md:px-[60px] 2xl:px-[200px] w-full">
+            <div className="bg-white dark:bg-black border-x border-zinc-200 dark:border-zinc-800 min-h-screen transition-colors duration-300">
+              {children}
+            </div>
+          </main>
+          <Footer />
+        </GSAPProvider>
       </body>
     </html>
   );
