@@ -1,18 +1,14 @@
 "use client";
 import {
   ArrowUp,
-  AtSign,
   ChevronDown,
   Folder,
   Github,
-  Image,
   Linkedin,
-  Mic,
   RefreshCw,
   Send,
   Terminal,
   Twitter,
-  Type,
 } from "lucide-react";
 import React, {
   useEffect,
@@ -74,7 +70,6 @@ const Footer = () => {
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    // Format: Sat Nov 29 18:55:32
     const updateTime = () => {
       const date = new Date();
       const dateString = date.toLocaleDateString("en-US", {
@@ -88,24 +83,19 @@ const Footer = () => {
     updateTime();
   }, []);
 
-  // Focus input when step changes (only after user has interacted)
   useEffect(() => {
     if (hasInteracted && inputRef.current) {
       inputRef.current.focus();
-      // Reset cursor position when step changes
       if (inputRef.current instanceof HTMLTextAreaElement) {
         inputRef.current.setSelectionRange(0, 0);
-        // Use setTimeout to avoid setState in effect warning
         setTimeout(() => setCursorPosition(0), 0);
       }
     }
-    // Reset email error when step changes
     if (step !== "email") {
       setTimeout(() => setEmailError(false), 0);
     }
   }, [step, hasInteracted]);
 
-  // Email validation regex
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -118,7 +108,6 @@ const Footer = () => {
     let promptText = "";
 
     if (step === "email") {
-      // Validate email
       if (!validateEmail(currentAnswer)) {
         setEmailError(true);
         return;
@@ -132,7 +121,7 @@ const Footer = () => {
       ]);
       setStep("name");
     } else if (step === "name") {
-      promptText = "Great! And may i know your name?";
+      promptText = "Great! And may I know your name?";
       setFormData((prev) => ({ ...prev, name: currentAnswer }));
       setHistory((prev) => [
         ...prev,
@@ -166,13 +155,10 @@ const Footer = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
-    // Mark as interacted when user starts typing
     if (!hasInteracted) {
       setHasInteracted(true);
     }
-    // Update cursor position
     setCursorPosition(e.target.selectionStart || 0);
-    // Clear error when user starts typing again
     if (step === "email" && emailError) {
       setEmailError(false);
     }
@@ -185,23 +171,18 @@ const Footer = () => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Submit on Enter for single-line inputs (email, name)
     if (step !== "message" && e.key === "Enter") {
       e.preventDefault();
       handleNextStep();
       return;
     }
 
-    // For message step:
-    // Allow Enter to create new line (default behavior)
-    // Submit only on Ctrl+Enter or Cmd+Enter
     if (step === "message" && e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
       handleNextStep();
       return;
     }
 
-    // Update cursor position after arrow key navigation
     if (
       e.key === "ArrowLeft" ||
       e.key === "ArrowRight" ||
@@ -228,67 +209,37 @@ const Footer = () => {
   return (
     <footer
       id="contact"
-      className="relative bg-[#FDFBF7] dark:bg-black px-6 md:px-12 py-20  transition-colors duration-300"
+      className="relative section-padding bg-background py-24 transition-colors duration-300"
     >
       {/* Section Header */}
-      <div className="mb-16 md:text-left text-center">
-        <h2 className="mb-4 font-mono text-zinc-500 text-sm uppercase tracking-widest">
-          Contact
+      <div className="mb-16">
+        <span className="section-label mb-4 block">Contact</span>
+        <h2 className="section-title text-4xl text-foreground md:text-5xl">
+          Let&apos;s get in touch
         </h2>
-        <p className="font-light text-black dark:text-white text-4xl md:text-5xl transition-colors duration-300">
-          Lets get in touch
-        </p>
       </div>
 
-      {/* Realistic Terminal Container */}
+      {/* Terminal Container */}
       <div className="mx-auto mb-24 w-full max-w-4xl">
-        <div
-          className={`${
-            theme === "dark"
-              ? "bg-[#1e1e1e] border-zinc-800 ring-white/5"
-              : "bg-zinc-100 border-zinc-300 ring-black/5"
-          } rounded-3xl shadow-2xl overflow-hidden border font-mono text-sm md:text-[15px] leading-normal ring-1`}
-        >
+        <div className="card overflow-hidden font-mono text-sm leading-normal md:text-[15px]">
           {/* Window Title Bar */}
-          <div
-            className={`${
-              theme === "dark"
-                ? "bg-[#2a2a2a] border-black/50"
-                : "bg-zinc-200 border-zinc-300/50"
-            } h-10 px-4 flex items-center justify-between border-b`}
-          >
+          <div className="flex h-12 items-center justify-between border-b border-border bg-surface-elevated px-4">
             <div className="flex gap-2">
-              <div className="bg-[#FF5F56] border border-[#E0443E] rounded-full w-3 h-3"></div>
-              <div className="bg-[#FFBD2E] border border-[#DEA123] rounded-full w-3 h-3"></div>
-              <div className="bg-[#27C93F] border border-[#1AAB29] rounded-full w-3 h-3"></div>
+              <div className="h-3 w-3 rounded-full bg-red-400" />
+              <div className="h-3 w-3 rounded-full bg-yellow-400" />
+              <div className="h-3 w-3 rounded-full bg-green-400" />
             </div>
-            <div
-              className={`${
-                theme === "dark" ? "text-zinc-400" : "text-zinc-600"
-              } text-xs font-medium flex items-center justify-center gap-2 opacity-80 w-full absolute left-0 pointer-events-none`}
-            >
-              <Folder
-                size={14}
-                className={`${
-                  theme === "dark"
-                    ? "text-blue-400 fill-blue-400/20"
-                    : "text-blue-600 fill-blue-600/20"
-                }`}
-              />
-              <span>Contact Form — -zsh — 80x24</span>
+            <div className="pointer-events-none absolute left-0 flex w-full items-center justify-center gap-2 text-xs font-medium text-foreground-subtle">
+              <Terminal size={14} />
+              <span>contact — zsh</span>
             </div>
-            <div className="w-12"></div> {/* Spacer for balance */}
+            <div className="w-12" />
           </div>
 
-          {/* Terminal Content - Scrollable Area */}
+          {/* Terminal Content */}
           <div
-            className={`p-4 md:p-5 min-h-[250px] cursor-text ${
-              theme === "dark"
-                ? "text-zinc-300 selection:bg-blue-500/30 selection:text-white"
-                : "text-zinc-800 selection:bg-blue-500/30 selection:text-white"
-            }`}
+            className="min-h-[250px] cursor-text p-5 text-foreground selection:bg-accent/20 selection:text-foreground md:p-6"
             onClick={() => {
-              // Only focus input if clicking empty space and not selecting text
               if (window.getSelection()?.toString().length === 0) {
                 setHasInteracted(true);
                 inputRef.current?.focus();
@@ -296,111 +247,62 @@ const Footer = () => {
             }}
           >
             {/* Login Message */}
-            <div
-              className={`mb-2 ${
-                theme === "dark" ? "text-zinc-400" : "text-zinc-600"
-              }`}
-            >
+            <div className="mb-4 text-foreground-subtle">
               Last login: {currentTime} on console
             </div>
 
-            {/* Interaction History */}
+            {/* History */}
             {history.map((item, idx) => (
               <div
                 key={idx}
-                className="opacity-70 hover:opacity-100 mb-4 transition-opacity duration-300"
+                className="mb-4 opacity-60 transition-opacity duration-300 hover:opacity-100"
               >
-                {/* Previous Prompt */}
-                <div
-                  className={`${
-                    theme === "dark" ? "text-zinc-400" : "text-zinc-600"
-                  } mb-2 font-medium`}
-                >
+                <div className="mb-2 font-medium text-foreground-subtle">
                   # {item.prompt}
                 </div>
-
-                {/* Frozen Editor State for History */}
-                <div className="w-full">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <div
-                      className={`${
-                        theme === "dark"
-                          ? "bg-[#2a2a2a] border-zinc-700/50 text-zinc-300"
-                          : "bg-zinc-200 border-zinc-300 text-zinc-700"
-                      } border rounded text-xs px-2 py-1 flex items-center gap-2 w-fit select-none`}
-                    >
-                      <Folder size={12} />
-                      <span>~/contact/{item.type}</span>
-                    </div>
-                    <div
-                      className={`${
-                        theme === "dark" ? "text-zinc-300" : "text-zinc-800"
-                      } whitespace-pre-wrap wrap-break-word flex-1 min-w-0`}
-                    >
-                      {item.answer}
-                    </div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex w-fit items-center gap-2 rounded border border-border bg-surface-elevated px-2 py-1 text-xs text-foreground-muted">
+                    <Folder size={12} />
+                    <span>~/contact/{item.type}</span>
+                  </div>
+                  <div className="min-w-0 flex-1 wrap-break-word whitespace-pre-wrap text-foreground">
+                    {item.answer}
                   </div>
                 </div>
               </div>
             ))}
 
-            {/* Current Prompt - Only show if not completed */}
+            {/* Current Prompt */}
             {step !== "completed" && (
-              <div
-                className={`${
-                  theme === "dark" ? "text-zinc-200" : "text-zinc-900"
-                } mb-3 font-medium`}
-              >
+              <div className="mb-3 font-medium text-foreground">
                 # {step === "email" && "Could you share your email with me?"}
-                {step === "name" && "Great! And may i know your name?"}
+                {step === "name" && "Great! And may I know your name?"}
                 {step === "message" &&
                   "Awesome, now tell us how we can assist you today."}
               </div>
             )}
 
-            {/* Completed Message */}
+            {/* Completed */}
             {step === "completed" && (
-              <div
-                className={`mt-6 animate-in fade-in duration-500 p-4 border rounded-lg ${
-                  theme === "dark"
-                    ? "border-green-900/30 bg-green-950/10"
-                    : "border-green-300 bg-green-50"
-                }`}
-              >
-                <div
-                  className={`flex items-center gap-3 ${
-                    theme === "dark" ? "text-green-400" : "text-green-600"
-                  } mb-2`}
-                >
-                  <div
-                    className={`w-6 h-6 rounded-full ${
-                      theme === "dark" ? "bg-green-500/20" : "bg-green-500/30"
-                    } flex items-center justify-center`}
-                  >
-                    <span className="text-sm">✔</span>
+              <div className="mt-6 rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-4">
+                <div className="mb-2 flex items-center gap-3 text-emerald-600 dark:text-emerald-400">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/20">
+                    <span className="text-sm">✓</span>
                   </div>
                   <span className="font-semibold">
-                    {"Message sent successfully!"}
+                    Message sent successfully!
                   </span>
                 </div>
-                <div
-                  className={`${
-                    theme === "dark" ? "text-zinc-500" : "text-zinc-600"
-                  } text-sm pl-9`}
-                >
+                <div className="pl-9 text-sm text-foreground-subtle">
                   Process exited with code 0. Session closed.
                 </div>
                 <button
                   onClick={handleCancel}
-                  className={`flex items-center gap-2 ${
-                    theme === "dark"
-                      ? "text-zinc-400 hover:text-white"
-                      : "text-zinc-600 hover:text-zinc-900"
-                  } hover:underline transition-all text-xs mt-6 pl-9 group font-mono`}
+                  className="group mt-6 flex items-center gap-2 pl-9 font-mono text-xs text-foreground-muted transition-colors hover:text-foreground"
                 >
                   <RefreshCw
                     size={12}
-                    className="group-hover:rotate-180 transition-transform duration-500"
+                    className="transition-transform duration-500 group-hover:rotate-180"
                   />
                   <span>./start-new-session.sh</span>
                 </button>
@@ -408,43 +310,26 @@ const Footer = () => {
             )}
           </div>
 
-          {/* Fixed Input Area at Bottom */}
+          {/* Input Area */}
           {step !== "completed" && (
-            <div
-              className={`border-t ${
-                theme === "dark"
-                  ? "border-zinc-800 bg-[#1a1a1a]"
-                  : "border-zinc-300 bg-zinc-50"
-              } p-4 md:p-5`}
-            >
-              <div className="slide-in-from-bottom-2 flex flex-col animate-in duration-500 fade-in">
-                {/* Context Pill */}
-                <div className="flex items-center gap-2 mb-2">
-                  <div
-                    className={`${
-                      theme === "dark"
-                        ? "bg-[#2a2a2a] border-zinc-700/50 text-zinc-300"
-                        : "bg-zinc-200 border-zinc-300 text-zinc-700"
-                    } border rounded text-xs px-2 py-1 flex items-center gap-2 w-fit`}
-                  >
+            <div className="border-t border-border bg-surface-elevated p-5 md:p-6">
+              <div className="flex flex-col">
+                {/* Context */}
+                <div className="mb-2 flex items-center gap-2">
+                  <div className="flex w-fit items-center gap-2 rounded border border-border bg-surface px-2 py-1 text-xs text-foreground-muted">
                     <Folder size={12} />
                     <span>~/contact/{step}</span>
                   </div>
                 </div>
 
-                {/* Editor Container */}
+                {/* Editor */}
                 <div
-                  className={`w-full border rounded-lg overflow-hidden flex flex-col transition-all ${
+                  className={`flex w-full flex-col overflow-hidden rounded-lg border transition-all ${
                     emailError
-                      ? theme === "dark"
-                        ? "border-red-500/50 bg-red-950/20 focus-within:border-red-500 focus-within:bg-red-950/30"
-                        : "border-red-500/70 bg-red-50 focus-within:border-red-500 focus-within:bg-red-100"
-                      : theme === "dark"
-                      ? "bg-black/40 border-zinc-700/50 focus-within:border-zinc-500 focus-within:bg-black/60"
-                      : "bg-white/60 border-zinc-300 focus-within:border-zinc-400 focus-within:bg-white/80"
+                      ? "border-red-500/50 bg-red-500/5 focus-within:border-red-500"
+                      : "border-border bg-background focus-within:border-border-hover"
                   } ${step === "message" ? "min-h-[120px]" : "h-[50px]"}`}
                 >
-                  {/* Input Area */}
                   <div className="relative flex-1 p-3">
                     <textarea
                       ref={inputRef as React.RefObject<HTMLTextAreaElement>}
@@ -454,30 +339,18 @@ const Footer = () => {
                       onSelect={handleSelectionChange}
                       onMouseUp={handleSelectionChange}
                       onKeyUp={handleSelectionChange}
-                      className="z-10 absolute inset-0 opacity-0 p-3 w-full h-full resize-none cursor-text"
+                      className="absolute inset-0 z-10 h-full w-full cursor-text resize-none p-3 opacity-0"
                       spellCheck={false}
                     />
-                    <div
-                      className={`${
-                        theme === "dark" ? "text-zinc-100" : "text-zinc-900"
-                      } whitespace-pre-wrap wrap-break-word leading-relaxed min-h-[24px]`}
-                    >
+                    <div className="min-h-[24px] whitespace-pre-wrap wrap-break-word leading-relaxed text-foreground">
                       {inputValue.slice(0, cursorPosition)}
-                      <span
-                        className={`inline-block w-0.5 h-5 ${
-                          theme === "dark" ? "bg-blue-400" : "bg-blue-600"
-                        } animate-pulse align-middle ml-px shadow-[0_0_8px_rgba(96,165,250,0.8)]`}
-                      ></span>
+                      <span className="ml-px inline-block h-5 w-0.5 animate-pulse bg-accent align-middle" />
                       {inputValue.slice(cursorPosition)}
                     </div>
                     {!inputValue && (
-                      <div
-                        className={`absolute top-3 left-3 ${
-                          theme === "dark" ? "text-zinc-600" : "text-zinc-400"
-                        } pointer-events-none select-none`}
-                      >
+                      <div className="pointer-events-none absolute left-3 top-3 select-none text-foreground-subtle">
                         {step === "email"
-                          ? "jhon@gmail.com"
+                          ? "john@example.com"
                           : step === "name"
                           ? "John Doe"
                           : "Type your message..."}
@@ -485,103 +358,35 @@ const Footer = () => {
                     )}
                   </div>
 
-                  {/* Toolbar - Only for message step */}
                   {step === "message" && (
-                    <div
-                      className={`px-3 py-2 border-t ${
-                        theme === "dark" ? "border-zinc-800" : "border-zinc-200"
-                      } flex items-center justify-between`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <button
-                          className={`p-1 rounded hover:bg-zinc-700/20 transition-colors ${
-                            theme === "dark"
-                              ? "text-zinc-400 hover:text-zinc-200"
-                              : "text-zinc-500 hover:text-zinc-800"
-                          }`}
-                        >
+                    <div className="flex items-center justify-between border-t border-border px-3 py-2">
+                      <div className="flex items-center gap-2">
+                        <button className="rounded p-1 text-foreground-subtle transition-colors hover:bg-border hover:text-foreground">
                           <Terminal size={14} />
                         </button>
-                        <button
-                          className={`p-1 rounded hover:bg-zinc-700/20 transition-colors ${
-                            theme === "dark"
-                              ? "text-zinc-400 hover:text-zinc-200"
-                              : "text-zinc-500 hover:text-zinc-800"
-                          }`}
-                        >
-                          <Type size={14} />
-                        </button>
-                        <button
-                          className={`p-1 rounded hover:bg-zinc-700/20 transition-colors ${
-                            theme === "dark"
-                              ? "text-zinc-400 hover:text-zinc-200"
-                              : "text-zinc-500 hover:text-zinc-800"
-                          }`}
-                        >
-                          <Mic size={14} />
-                        </button>
-                        <button
-                          className={`p-1 rounded hover:bg-zinc-700/20 transition-colors ${
-                            theme === "dark"
-                              ? "text-zinc-400 hover:text-zinc-200"
-                              : "text-zinc-500 hover:text-zinc-800"
-                          }`}
-                        >
-                          <AtSign size={14} />
-                        </button>
-                        <button
-                          className={`p-1 rounded hover:bg-zinc-700/20 transition-colors ${
-                            theme === "dark"
-                              ? "text-zinc-400 hover:text-zinc-200"
-                              : "text-zinc-500 hover:text-zinc-800"
-                          }`}
-                        >
-                          <Image size={14} />
-                        </button>
                       </div>
-
-                      <button
-                        className={`flex items-center gap-1.5 px-2 py-1 rounded text-xs border ${
-                          theme === "dark"
-                            ? "border-zinc-700 text-zinc-400 hover:bg-zinc-800"
-                            : "border-zinc-300 text-zinc-600 hover:bg-zinc-100"
-                        } transition-colors`}
-                      >
-                        <span>auto (responsive)</span>
+                      <button className="flex items-center gap-1.5 rounded border border-border px-2 py-1 text-xs text-foreground-muted transition-colors hover:bg-surface">
+                        <span>auto</span>
                         <ChevronDown size={10} />
                       </button>
                     </div>
                   )}
                 </div>
 
-                {/* Error Message */}
+                {/* Error */}
                 {emailError && step === "email" && (
-                  <div
-                    className={`mt-2 px-3 text-xs ${
-                      theme === "dark" ? "text-red-400" : "text-red-600"
-                    } font-mono`}
-                  >
+                  <div className="mt-2 px-1 font-mono text-xs text-red-500">
                     zsh: invalid email format
                   </div>
                 )}
 
-                {/* Footer Hint & Buttons */}
-                <div className="flex justify-between items-center mt-3 px-1">
-                  <div
-                    className={`text-[10px] ${
-                      theme === "dark" ? "text-zinc-600" : "text-zinc-500"
-                    } font-sans select-none`}
-                  >
+                {/* Footer */}
+                <div className="mt-3 flex items-center justify-between px-1">
+                  <div className="select-none font-sans text-[10px] text-foreground-subtle">
                     {step === "message" ? (
                       <>
                         Press{" "}
-                        <span
-                          className={`px-1 py-0.5 ${
-                            theme === "dark"
-                              ? "bg-zinc-800 text-zinc-400"
-                              : "bg-zinc-200 text-zinc-600"
-                          } rounded mx-0.5`}
-                        >
+                        <span className="mx-0.5 rounded bg-border px-1 py-0.5 text-foreground-muted">
                           ⌘ + Enter
                         </span>{" "}
                         to send
@@ -589,13 +394,7 @@ const Footer = () => {
                     ) : (
                       <>
                         Press{" "}
-                        <span
-                          className={`px-1 py-0.5 ${
-                            theme === "dark"
-                              ? "bg-zinc-800 text-zinc-400"
-                              : "bg-zinc-200 text-zinc-600"
-                          } rounded mx-0.5`}
-                        >
+                        <span className="mx-0.5 rounded bg-border px-1 py-0.5 text-foreground-muted">
                           Enter
                         </span>{" "}
                         to continue
@@ -603,21 +402,20 @@ const Footer = () => {
                     )}
                   </div>
 
-                  {/* Buttons only visible for Message step */}
                   {step === "message" && (
                     <div className="flex gap-2">
                       <button
                         onClick={handleCancel}
-                        className="hover:bg-zinc-800 px-3 py-1.5 rounded text-zinc-500 hover:text-zinc-300 text-xs transition-colors"
+                        className="rounded px-3 py-1.5 text-xs text-foreground-muted transition-colors hover:bg-border hover:text-foreground"
                       >
-                        {"Cancel"}
+                        Cancel
                       </button>
                       <button
                         onClick={handleNextStep}
-                        className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 shadow-blue-900/20 shadow-lg px-3 py-1.5 rounded font-medium text-white text-xs transition-colors"
+                        className="flex items-center gap-1.5 rounded bg-accent px-3 py-1.5 text-xs font-medium text-background transition-colors hover:bg-accent-hover"
                       >
                         <Send size={12} />
-                        <span>{"Send"}</span>
+                        <span>Send</span>
                       </button>
                     </div>
                   )}
@@ -629,30 +427,33 @@ const Footer = () => {
       </div>
 
       {/* Footer Bottom */}
-      <div className="flex md:flex-row flex-col justify-between items-center gap-8 pt-10">
-        <div className="flex md:flex-row flex-col items-center gap-6 font-mono text-zinc-500 dark:text-zinc-600 text-xs uppercase tracking-wider">
-          <span>© 2024 </span>
-          <span className="hidden md:block bg-zinc-300 dark:bg-zinc-800 rounded-full w-1 h-1"></span>
-          <span>{"Designed by Billy Bautista"}</span>
+      <div className="flex flex-col items-center justify-between gap-8 border-t border-border pt-10 md:flex-row">
+        <div className="flex flex-col items-center gap-4 text-xs text-foreground-subtle md:flex-row md:gap-6">
+          <span>© {new Date().getFullYear()}</span>
+          <span className="hidden h-1 w-1 rounded-full bg-border md:block" />
+          <span>Designed by Billy Bautista</span>
         </div>
 
         <div className="flex items-center gap-6">
-          <div className="flex gap-4 text-zinc-400 dark:text-zinc-600">
+          <div className="flex gap-4">
             <a
               href="#"
-              className="hover:text-black dark:hover:text-white transition-colors"
+              className="text-foreground-subtle transition-colors hover:text-foreground"
+              aria-label="GitHub"
             >
               <Github size={20} />
             </a>
             <a
               href="#"
-              className="hover:text-black dark:hover:text-white transition-colors"
+              className="text-foreground-subtle transition-colors hover:text-foreground"
+              aria-label="LinkedIn"
             >
               <Linkedin size={20} />
             </a>
             <a
               href="#"
-              className="hover:text-black dark:hover:text-white transition-colors"
+              className="text-foreground-subtle transition-colors hover:text-foreground"
+              aria-label="Twitter"
             >
               <Twitter size={20} />
             </a>
@@ -660,7 +461,7 @@ const Footer = () => {
 
           <button
             onClick={scrollToTop}
-            className="flex justify-center items-center hover:bg-zinc-100 dark:hover:bg-zinc-900 ml-4 border border-zinc-200 dark:border-zinc-800 rounded-full w-10 h-10 text-zinc-400 hover:text-black dark:hover:text-white transition-all"
+            className="ml-4 flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground-subtle transition-all hover:border-border-hover hover:bg-surface hover:text-foreground"
             aria-label="Scroll to top"
           >
             <ArrowUp size={18} />

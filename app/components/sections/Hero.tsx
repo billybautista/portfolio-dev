@@ -1,40 +1,73 @@
+"use client";
+import { ArrowDown } from "lucide-react";
+
 const Hero = () => {
   return (
     <section
       id="home"
-      className="relative flex flex-col justify-center px-6 md:px-12 h-screen"
+      className="relative flex flex-col justify-center section-padding min-h-screen"
     >
-      {/* Background Blob - Single distinct entity */}
-      <div className="z-0 absolute inset-0 flex justify-center items-center w-full h-full overflow-hidden pointer-events-none">
-        <div className="bg-blue-500/50 dark:bg-blue-600/40 opacity-100 blur-[50px] md:blur-[80px] rounded-full w-[300px] md:w-[400px] h-[300px] md:h-[400px] transition-colors duration-300 moving-blob"></div>
+      {/* Subtle gradient orb */}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+        <div className="absolute h-[600px] w-[600px] rounded-full bg-gradient-to-br from-neutral-200/40 via-neutral-300/20 to-transparent blur-3xl dark:from-neutral-800/30 dark:via-neutral-900/20 animate-glow" />
       </div>
 
-      <div className="z-10 relative flex flex-col justify-center pb-20 h-full">
+      {/* Grid pattern overlay */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30" />
+
+      <div className="relative z-10 flex h-full flex-col justify-center pb-32 pt-20">
+        {/* Status badge */}
+        <div className="mb-8 flex items-center gap-3">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+          </span>
+          <span className="text-sm font-medium text-foreground-muted">
+            Available for new projects
+          </span>
+        </div>
+
         {/* Main Heading */}
-        <h1 className="mb-8 font-bold text-black dark:text-white text-6xl md:text-8xl lg:text-9xl leading-[1.05] tracking-tighter">
-          <div className="py-2 overflow-hidden">
-            <span className="inline-block font-serif text-[#0a192f] dark:text-white italic hero-text">
-              Billy Bautista
-            </span>
-          </div>
-          <div className="py-1 overflow-hidden">
-            <span className="inline-block font-medium text-zinc-600 dark:text-zinc-400 text-4xl md:text-5xl lg:text-6xl tracking-tight hero-text">
-              Software Engineer
-            </span>
-          </div>
+        <h1 className="mb-6">
+          <span className="block font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl">
+            Billy Bautista
+          </span>
+          <span className="mt-2 block font-display text-3xl font-medium tracking-tight text-foreground-muted sm:text-4xl md:text-5xl lg:text-6xl">
+            Software Engineer
+          </span>
         </h1>
 
         {/* Description */}
-        <div className="max-w-2xl font-light text-zinc-600 dark:text-zinc-400 text-lg md:text-xl lg:text-2xl leading-relaxed hero-sub">
-          <p>
-            I m a software engineer with a passion for building web applications
-            that are fast, efficient, and user-friendly.
-          </p>
+        <p className="max-w-xl text-lg leading-relaxed text-foreground-muted md:text-xl">
+          Crafting elegant digital experiences through clean code and thoughtful
+          design. Specialized in building fast, scalable web applications.
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+          <a href="#projects" className="btn-primary">
+            View My Work
+          </a>
+          <a href="#contact" className="btn-secondary">
+            Get In Touch
+          </a>
         </div>
       </div>
 
-      {/* Custom Mouse Scroll Indicator - Monochrome */}
+      {/* Scroll indicator */}
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2">
+        <a
+          href="#stats"
+          className="flex flex-col items-center gap-2 text-foreground-subtle transition-colors hover:text-foreground"
+        >
+          <span className="text-xs font-medium uppercase tracking-widest">
+            Scroll
+          </span>
+          <ArrowDown size={16} className="animate-bounce" />
+        </a>
+      </div>
     </section>
   );
 };
+
 export default Hero;

@@ -9,7 +9,7 @@ import TechStack from "./components/sections/TechStack";
 
 export default function Home() {
   return (
-    <main className="bg-white dark:bg-black w-full min-h-screen text-zinc-900 dark:text-white transition-colors duration-300">
+    <main className="bg-background w-full min-h-screen text-foreground transition-colors duration-400">
       <Hero />
       <Stats />
       <About />

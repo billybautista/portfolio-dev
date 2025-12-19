@@ -28,36 +28,22 @@ const tags = [
   "API Design",
 ];
 
+// Monochromatic, sophisticated color palette
 const colors = [
   {
-    border: "border-cyan-500",
-    text: "text-cyan-600 dark:text-cyan-400",
-    bg: "bg-cyan-100 dark:bg-cyan-950",
+    border: "border-neutral-300 dark:border-neutral-700",
+    text: "text-neutral-700 dark:text-neutral-300",
+    bg: "bg-white dark:bg-neutral-900",
   },
   {
-    border: "border-purple-500",
-    text: "text-purple-600 dark:text-purple-400",
-    bg: "bg-purple-100 dark:bg-purple-950",
+    border: "border-neutral-400 dark:border-neutral-600",
+    text: "text-neutral-800 dark:text-neutral-200",
+    bg: "bg-neutral-50 dark:bg-neutral-800",
   },
   {
-    border: "border-emerald-500",
-    text: "text-emerald-600 dark:text-emerald-400",
-    bg: "bg-emerald-100 dark:bg-emerald-950",
-  },
-  {
-    border: "border-rose-500",
-    text: "text-rose-600 dark:text-rose-400",
-    bg: "bg-rose-100 dark:bg-rose-950",
-  },
-  {
-    border: "border-amber-500",
-    text: "text-amber-600 dark:text-amber-400",
-    bg: "bg-amber-100 dark:bg-amber-950",
-  },
-  {
-    border: "border-blue-500",
-    text: "text-blue-600 dark:text-blue-400",
-    bg: "bg-blue-100 dark:bg-blue-950",
+    border: "border-neutral-200 dark:border-neutral-800",
+    text: "text-neutral-600 dark:text-neutral-400",
+    bg: "bg-neutral-100 dark:bg-neutral-900",
   },
 ];
 
@@ -93,7 +79,6 @@ const FallingPills: React.FC<FallingPillsProps> = ({ triggerRef }) => {
         },
       });
 
-      // Ensure canvas is properly styled for mouse interaction
       render.canvas.style.position = "absolute";
       render.canvas.style.top = "0";
       render.canvas.style.left = "0";
@@ -162,7 +147,6 @@ const FallingPills: React.FC<FallingPillsProps> = ({ triggerRef }) => {
         },
       });
 
-      // Disable scroll hijacking from mouse constraint
       const mouseElement = mouseConstraint.mouse.element;
       const mouseAny = mouseConstraint.mouse as unknown as {
         mousewheel: EventListener;
@@ -170,7 +154,6 @@ const FallingPills: React.FC<FallingPillsProps> = ({ triggerRef }) => {
       mouseElement.removeEventListener("mousewheel", mouseAny.mousewheel);
       mouseElement.removeEventListener("DOMMouseScroll", mouseAny.mousewheel);
 
-      // Allow scroll to pass through the canvas
       const handleWheel = (e: WheelEvent) => {
         window.scrollBy(0, e.deltaY);
       };
@@ -187,7 +170,6 @@ const FallingPills: React.FC<FallingPillsProps> = ({ triggerRef }) => {
 
       const triggerElement = triggerRef?.current || containerRef.current;
 
-      // ScrollTrigger will be automatically cleaned up by useGSAP
       ScrollTrigger.create({
         trigger: triggerElement,
         start: "top 60%",
@@ -232,7 +214,6 @@ const FallingPills: React.FC<FallingPillsProps> = ({ triggerRef }) => {
 
       window.addEventListener("resize", handleResize);
 
-      // Cleanup function for Matter.js (ScrollTrigger is auto-cleaned by useGSAP)
       return () => {
         window.removeEventListener("resize", handleResize);
         cancelAnimationFrame(animId);
@@ -255,31 +236,29 @@ const FallingPills: React.FC<FallingPillsProps> = ({ triggerRef }) => {
   );
 
   return (
-    <div className="px-6 md:px-12 border-t border-b border-zinc-200 dark:border-zinc-800">
-      <section className="relative bg-white dark:bg-black py-20 w-full h-[600px] overflow-hidden transition-colors duration-300 border-x border-zinc-200 dark:border-zinc-800">
-        <div className="top-10 left-0 z-0 absolute w-full text-center pointer-events-none">
-          <p className="mb-4 font-mono text-zinc-500 text-sm uppercase tracking-widest">
-            Interests & Skills
-          </p>
-          <h2 className="font-light text-black dark:text-white text-3xl md:text-5xl transition-colors duration-300">
-            Drag & Thro
+    <div className="border-y border-border">
+      <section className="relative h-[600px] w-full overflow-hidden bg-background transition-colors duration-300">
+        <div className="pointer-events-none absolute left-0 top-10 z-0 w-full text-center">
+          <span className="section-label mb-4 block">Interests & Skills</span>
+          <h2 className="section-title text-3xl text-foreground md:text-5xl">
+            Drag & Explore
           </h2>
         </div>
 
         <div
           ref={containerRef}
-          className="z-10 absolute inset-0 w-full h-full  active:cursor-grabbing"
+          className="absolute inset-0 z-10 h-full w-full active:cursor-grabbing"
         >
           <div
             ref={sceneRef}
-            className="top-0 left-0 absolute w-full h-full pointer-events-none z-20"
+            className="pointer-events-none absolute left-0 top-0 z-20 h-full w-full"
           >
             {tags.map((tag, i) => {
               const color = colors[i % colors.length];
               return (
                 <div
                   key={i}
-                  className={`absolute top-0 left-0 inline-block px-8 py-3 rounded-full border ${color.bg} ${color.border} ${color.text} text-xl md:text-2xl font-medium whitespace-nowrap select-none opacity-0 shadow-lg dark:shadow-[0_0_15px_rgba(0,0,0,0.5)] will-change-transform`}
+                  className={`absolute left-0 top-0 inline-block select-none whitespace-nowrap rounded-full border px-6 py-3 text-lg font-medium opacity-0 shadow-sm transition-shadow will-change-transform hover:shadow-md md:px-8 md:py-3 md:text-xl ${color.bg} ${color.border} ${color.text}`}
                 >
                   {tag}
                 </div>

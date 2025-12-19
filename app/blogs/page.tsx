@@ -1,7 +1,7 @@
 "use client";
 
-import { ArrowUpRight, BookOpen } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ArrowLeft, ArrowUpRight, BookOpen, Clock } from "lucide-react";
+import Link from "next/link";
 
 interface Blog {
   title: string;
@@ -76,181 +76,110 @@ const blogs: Blog[] = [
   },
 ];
 
-interface BlogStyle {
-  bg: string;
-  text: string;
-  accent: string;
-  button: string;
-  tag: string;
-}
-
-const BLOG_STYLES: BlogStyle[] = [
-  {
-    bg: "bg-[#581c87] dark:bg-[#3b0764]",
-    text: "text-purple-50",
-    accent: "text-purple-200",
-    button: "bg-purple-100 text-purple-900 hover:bg-white",
-    tag: "border-purple-200/30 text-purple-100 bg-purple-900/20",
-  },
-  {
-    bg: "bg-[#1e3a8a] dark:bg-[#1e40af]",
-    text: "text-blue-50",
-    accent: "text-blue-200",
-    button: "bg-blue-100 text-blue-900 hover:bg-white",
-    tag: "border-blue-200/30 text-blue-100 bg-blue-900/20",
-  },
-  {
-    bg: "bg-[#166534] dark:bg-[#14532d]",
-    text: "text-green-50",
-    accent: "text-green-200",
-    button: "bg-green-100 text-green-900 hover:bg-white",
-    tag: "border-green-200/30 text-green-100 bg-green-900/20",
-  },
-  {
-    bg: "bg-[#9f1239] dark:bg-[#831843]",
-    text: "text-pink-50",
-    accent: "text-pink-200",
-    button: "bg-pink-100 text-pink-900 hover:bg-white",
-    tag: "border-pink-200/30 text-pink-100 bg-pink-900/20",
-  },
-  {
-    bg: "bg-[#155e75] dark:bg-[#164e63]",
-    text: "text-cyan-50",
-    accent: "text-cyan-200",
-    button: "bg-cyan-100 text-cyan-900 hover:bg-white",
-    tag: "border-cyan-200/30 text-cyan-100 bg-cyan-900/20",
-  },
-  {
-    bg: "bg-[#4c1d95] dark:bg-[#5b21b6]",
-    text: "text-violet-50",
-    accent: "text-violet-200",
-    button: "bg-violet-100 text-violet-900 hover:bg-white",
-    tag: "border-violet-200/30 text-violet-100 bg-violet-900/20",
-  },
-];
-
 export default function BlogsPage() {
-  const router = useRouter();
-
-  const getBlogStyle = (index: number): BlogStyle => {
-    return BLOG_STYLES[index % BLOG_STYLES.length];
-  };
-
   return (
-    <main className="bg-white dark:bg-black w-full min-h-screen text-zinc-900 dark:text-white transition-colors duration-300">
-      <section
-        id="all-blogs"
-        className="relative bg-[#FDFBF7] dark:bg-black border-zinc-200 dark:border-zinc-800 border-b w-full"
-      >
-        <div className="bg-[#FDFBF7] dark:bg-black px-6 md:px-12 py-20 transition-colors duration-300">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="font-mono text-zinc-500 text-sm uppercase tracking-widest">
-              Thoughts, insights, and technical deep-dives.
-            </h2>
-            <button
-              onClick={() => router.push("/")}
-              className="font-mono text-zinc-500 hover:text-zinc-900 dark:hover:text-white text-sm transition-colors"
-            >
-              ← Back to Home
-            </button>
-          </div>
-          <p className="max-w-2xl font-light text-black dark:text-white text-4xl md:text-5xl transition-colors duration-300">
-            Blog Articles
-          </p>
+    <main className="min-h-screen w-full bg-background text-foreground transition-colors duration-300">
+      {/* Header */}
+      <section className="section-padding border-b border-border bg-background py-20">
+        <div className="mb-8 flex items-center justify-between">
+          <span className="section-label">
+            Thoughts, insights & technical deep-dives
+          </span>
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-sm font-medium text-foreground-muted transition-colors hover:text-foreground"
+          >
+            <ArrowLeft size={16} />
+            Back to Home
+          </Link>
         </div>
+        <h1 className="section-title text-4xl text-foreground md:text-5xl lg:text-6xl">
+          Blog Articles
+        </h1>
+      </section>
 
-        <div className="z-10 relative px-6 md:px-12 pb-20">
-          <div className="space-y-12">
-            {blogs.map((blog, idx) => {
-              const style = getBlogStyle(idx);
-
-              return (
-                <div
-                  key={idx}
-                  className={`relative w-full ${style.bg} rounded-[40px] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/10`}
-                >
-                  <div className="flex flex-col justify-center p-8 md:p-16 w-full md:w-1/2">
-                    <div
-                      className={`flex items-center gap-4 text-xs font-mono mb-6 ${style.accent} uppercase tracking-wider`}
-                    >
-                      <span>{blog.date}</span>
-                      <span className="bg-current opacity-50 w-px h-3"></span>
-                      <span>{blog.category}</span>
-                      {blog.readTime && (
-                        <>
-                          <span className="bg-current opacity-50 w-px h-3"></span>
-                          <span>{blog.readTime}</span>
-                        </>
-                      )}
-                    </div>
-
-                    <h3
-                      className={`text-4xl md:text-6xl font-bold mb-6 leading-tight ${style.text}`}
-                    >
-                      {blog.title}
-                    </h3>
-
-                    <p
-                      className={`text-lg md:text-xl leading-relaxed mb-10 opacity-90 ${style.text}`}
-                    >
-                      {blog.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-3 mb-12">
-                      {blog.tags.map((tag, tIdx) => (
-                        <span
-                          key={tIdx}
-                          className={`px-4 py-1.5 text-sm font-medium rounded-full border backdrop-blur-sm ${style.tag}`}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                      {blog.link && (
-                        <a
-                          href={blog.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`group flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all transform hover:-translate-y-1 hover:shadow-lg ${style.button}`}
-                        >
-                          <span>Read Article</span>
-                          <ArrowUpRight
-                            size={18}
-                            className="group-hover:rotate-45 transition-transform"
-                          />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="relative bg-black/10 w-full md:w-1/2 h-64 md:h-auto overflow-hidden">
-                    <div className="absolute inset-0 flex justify-center items-center p-12">
-                      <div className="relative flex flex-col gap-4 bg-white/10 shadow-2xl backdrop-blur-md p-6 border border-white/20 rounded-lg w-full aspect-[4/3] rotate-3 hover:rotate-0 transition-transform duration-700 transform">
-                        <div className="bg-white/20 mb-4 rounded w-full h-6"></div>
-                        <div className="bg-white/15 mb-2 rounded w-3/4 h-4"></div>
-                        <div className="bg-white/15 mb-4 rounded w-full h-4"></div>
-                        <div className="flex gap-4 mb-4">
-                          <div className="bg-white/10 rounded w-full h-24"></div>
-                        </div>
-                        <div className="bg-white/10 rounded w-full h-3"></div>
-                        <div className="bg-white/10 rounded w-5/6 h-3"></div>
-                        <div className="bg-white/10 rounded w-4/6 h-3"></div>
-                        <div className="top-6 right-6 absolute text-white/40">
-                          <BookOpen size={48} />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+      {/* Blog Grid */}
+      <section className="section-padding py-16">
+        <div className="grid gap-6 md:grid-cols-2">
+          {blogs.map((blog, idx) => (
+            <article
+              key={idx}
+              className="group card flex flex-col overflow-hidden transition-all hover:border-border-hover hover-lift"
+            >
+              {/* Preview mockup */}
+              <div className="relative h-48 overflow-hidden border-b border-border bg-background-alt">
+                <div className="absolute inset-0 flex items-center justify-center p-8">
+                  <div className="relative w-full max-w-xs transform rounded-lg border border-border bg-surface p-4 shadow-sm transition-transform duration-500 group-hover:scale-105">
+                    <div className="mb-3 h-3 w-3/4 rounded bg-border" />
+                    <div className="mb-2 h-2 w-full rounded bg-border/60" />
+                    <div className="mb-2 h-2 w-5/6 rounded bg-border/60" />
+                    <div className="h-2 w-4/6 rounded bg-border/60" />
+                    <BookOpen
+                      size={32}
+                      className="absolute right-4 top-4 text-foreground-subtle/30"
+                    />
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+
+              {/* Content */}
+              <div className="flex flex-1 flex-col p-6 md:p-8">
+                {/* Meta */}
+                <div className="mb-4 flex items-center gap-3 text-xs font-medium text-foreground-subtle">
+                  <span>{blog.date}</span>
+                  <span className="h-1 w-1 rounded-full bg-foreground-subtle" />
+                  <span>{blog.category}</span>
+                  {blog.readTime && (
+                    <>
+                      <span className="h-1 w-1 rounded-full bg-foreground-subtle" />
+                      <span className="flex items-center gap-1">
+                        <Clock size={12} />
+                        {blog.readTime}
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                {/* Title */}
+                <h2 className="mb-3 font-display text-xl font-bold tracking-tight text-foreground md:text-2xl">
+                  {blog.title}
+                </h2>
+
+                {/* Description */}
+                <p className="mb-6 flex-1 text-sm leading-relaxed text-foreground-muted">
+                  {blog.description}
+                </p>
+
+                {/* Tags */}
+                <div className="mb-6 flex flex-wrap gap-2">
+                  {blog.tags.map((tag, tIdx) => (
+                    <span
+                      key={tIdx}
+                      className="rounded-full border border-border bg-surface-elevated px-2.5 py-1 text-xs font-medium text-foreground-muted"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* CTA */}
+                {blog.link && (
+                  <a
+                    href={blog.link}
+                    className="group/btn inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-foreground-muted"
+                  >
+                    Read Article
+                    <ArrowUpRight
+                      size={16}
+                      className="transition-transform group-hover/btn:rotate-45"
+                    />
+                  </a>
+                )}
+              </div>
+            </article>
+          ))}
         </div>
       </section>
     </main>
   );
 }
-

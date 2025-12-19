@@ -26,14 +26,13 @@ const Projects: React.FC<ProjectsProps> = ({
   const panelsRef = useRef<(HTMLDivElement | null)[]>([]);
   const router = useRouter();
 
-  // Translations and project data
   const t = useMemo(
     () => ({
       label: "Projects",
-      title: "Featured Projects",
+      title: "Selected Work",
       buttons: {
-        demo: "View Demo",
-        code: "View Code",
+        demo: "Live Demo",
+        code: "Source",
         viewAll: "View All Projects",
       },
       items: [
@@ -112,24 +111,21 @@ const Projects: React.FC<ProjectsProps> = ({
     []
   );
 
-  // Limit projects if limit prop is provided
   const projectsToShow = limit ? t.items.slice(0, limit) : t.items;
   const hasMoreProjects = limit && t.items.length > limit;
 
   return (
-    <section id="projects" className="relative bg-white dark:bg-black w-full">
-      {/* Section Header - Sticky at top until first card covers it */}
-      <div className=" bg-white dark:bg-black px-6 md:px-12 pt-20 transition-colors duration-300">
-        <h2 className="mb-4 font-mono text-zinc-500 text-sm uppercase tracking-widest">
-          {t.label}
-        </h2>
-        <p className="max-w-2xl font-light text-black dark:text-white text-4xl md:text-5xl transition-colors duration-300">
+    <section id="projects" className="relative w-full bg-background">
+      {/* Section Header */}
+      <div className="section-padding bg-background pt-32 transition-colors duration-300">
+        <span className="section-label mb-4 block">{t.label}</span>
+        <h2 className="section-title max-w-2xl text-4xl text-foreground md:text-5xl">
           {t.title}
-        </p>
+        </h2>
       </div>
 
-      {/* Stacked Panels Container */}
-      <div className="z-10 relative pb-20">
+      {/* Projects Grid */}
+      <div className="relative z-10 pb-20 pt-16">
         {projectsToShow.map((project: Project, idx: number) => {
           return (
             <div
@@ -137,37 +133,37 @@ const Projects: React.FC<ProjectsProps> = ({
               ref={(el) => {
                 panelsRef.current[idx] = el;
               }}
-              className="sticky top-16  min-h-[600px] w-full flex items-center justify-center px-6 md:px-12 overflow-hidden opacity-100"
+              className="sticky top-20 flex min-h-[550px] w-full items-center justify-center section-padding overflow-hidden opacity-100"
             >
-              {/* Card Surface - White rounded rectangle on light grey background */}
-              <div className="relative w-full h-full  bg-white dark:bg-zinc-800  overflow-hidden flex flex-col md:flex-row border border-zinc-200 dark:border-zinc-700">
-                {/* Text Content - Left Section */}
-                <div className="z-20 relative flex flex-col justify-center p-8 md:p-16 w-full md:w-1/2">
-                  {/* Header with date and status */}
-                  <div className="flex items-center gap-4 text-xs font-mono mb-6 text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+              {/* Card */}
+              <div className="card relative flex h-full w-full flex-col overflow-hidden md:flex-row">
+                {/* Text Content */}
+                <div className="relative z-20 flex w-full flex-col justify-center p-8 md:w-1/2 md:p-12 lg:p-16">
+                  {/* Meta */}
+                  <div className="mb-6 flex items-center gap-3 text-xs font-medium uppercase tracking-widest text-foreground-subtle">
                     <span>{project.date}</span>
-                    <span className="bg-zinc-300 dark:bg-zinc-600 w-px h-3"></span>
-                    <span className="text-amber-700 dark:text-amber-600">
+                    <span className="h-1 w-1 rounded-full bg-foreground-subtle" />
+                    <span className="text-emerald-600 dark:text-emerald-400">
                       {project.status}
                     </span>
                   </div>
 
-                  {/* Title - Large, bold, dark blue */}
-                  <h3 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-blue-900 dark:text-blue-400">
+                  {/* Title */}
+                  <h3 className="mb-4 font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl">
                     {project.title}
                   </h3>
 
-                  {/* Description - Dark grey text */}
-                  <p className="text-lg md:text-xl leading-relaxed mb-10 text-zinc-700 dark:text-zinc-300">
+                  {/* Description */}
+                  <p className="mb-8 text-base leading-relaxed text-foreground-muted md:text-lg">
                     {project.description}
                   </p>
 
-                  {/* Tags - Small rounded rectangles with light grey background */}
-                  <div className="flex flex-wrap gap-3 mb-12">
+                  {/* Tags */}
+                  <div className="mb-10 flex flex-wrap gap-2">
                     {project.tags.map((tag: string, tIdx: number) => (
                       <span
                         key={tIdx}
-                        className="px-4 py-1.5 text-sm font-medium rounded-full bg-zinc-100 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-600"
+                        className="rounded-full border border-border bg-surface-elevated px-3 py-1.5 text-xs font-medium text-foreground-muted"
                       >
                         {tag}
                       </span>
@@ -175,18 +171,18 @@ const Projects: React.FC<ProjectsProps> = ({
                   </div>
 
                   {/* Buttons */}
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-wrap items-center gap-3">
                     {project.link && (
                       <a
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all transform hover:-translate-y-1 hover:shadow-lg bg-blue-900 dark:bg-blue-600 text-white"
+                        className="btn-primary group flex items-center gap-2"
                       >
                         <span>{t.buttons.demo}</span>
                         <ArrowUpRight
-                          size={18}
-                          className="group-hover:rotate-45 transition-transform"
+                          size={16}
+                          className="transition-transform group-hover:rotate-45"
                         />
                       </a>
                     )}
@@ -196,41 +192,37 @@ const Projects: React.FC<ProjectsProps> = ({
                         href={project.repo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-8 py-4 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 rounded-full font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-all"
+                        className="btn-secondary flex items-center gap-2"
                       >
-                        <Github size={20} />
+                        <Github size={16} />
                         <span>{t.buttons.code}</span>
-                        <ArrowUpRight size={18} className="ml-1" />
                       </a>
                     )}
                   </div>
                 </div>
 
-                {/* Visual/Image Area - Right Section - Browser Window Mockup */}
-                <div className="relative bg-zinc-50 dark:bg-zinc-800 w-full md:w-1/2 h-full overflow-hidden border-l border-zinc-200 dark:border-zinc-700">
-                  <div className="absolute inset-0 flex flex-col p-6">
-                    {/* Browser Window Header */}
-                    <div className="flex items-center gap-2 mb-2">
-                      {/* Window Controls - Two circular dots */}
-                      <div className="w-3 h-3 rounded-full bg-amber-700 dark:bg-amber-600"></div>
-                      <div className="w-3 h-3 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
+                {/* Visual Area */}
+                <div className="relative h-64 w-full border-t border-border bg-background-alt md:h-auto md:w-1/2 md:border-l md:border-t-0">
+                  <div className="absolute inset-0 flex flex-col p-6 md:p-8">
+                    {/* Browser mockup header */}
+                    <div className="mb-4 flex items-center gap-2">
+                      <div className="h-2.5 w-2.5 rounded-full bg-foreground-subtle/30" />
+                      <div className="h-2.5 w-2.5 rounded-full bg-foreground-subtle/30" />
+                      <div className="h-2.5 w-2.5 rounded-full bg-foreground-subtle/30" />
                     </div>
 
-                    {/* URL Bar - Thin light grey horizontal line */}
-                    <div className="h-px bg-zinc-200 dark:bg-zinc-700 mb-6"></div>
+                    {/* URL bar */}
+                    <div className="mb-6 h-px w-full bg-border" />
 
-                    {/* Content Area */}
-                    <div className="flex-1 flex flex-col gap-4">
-                      {/* Two larger square-like cards side-by-side */}
+                    {/* Content placeholders */}
+                    <div className="flex flex-1 flex-col gap-4">
                       <div className="flex gap-4">
-                        <div className="flex-1 bg-zinc-200 dark:bg-zinc-700 rounded-lg h-32"></div>
-                        <div className="flex-1 bg-zinc-200 dark:bg-zinc-700 rounded-lg h-32"></div>
+                        <div className="h-24 flex-1 rounded-xl bg-border/50" />
+                        <div className="h-24 flex-1 rounded-xl bg-border/50" />
                       </div>
-
-                      {/* Wider, shorter rectangular card below */}
-                      <div className="bg-zinc-200 dark:bg-zinc-700 rounded-lg h-24 p-4 flex flex-col gap-2">
-                        <div className="h-2 bg-zinc-300 dark:bg-zinc-600 rounded w-full"></div>
-                        <div className="h-2 bg-zinc-300 dark:bg-zinc-600 rounded w-3/4"></div>
+                      <div className="flex h-16 flex-col gap-2 rounded-xl bg-border/50 p-4">
+                        <div className="h-2 w-full rounded bg-border" />
+                        <div className="h-2 w-3/4 rounded bg-border" />
                       </div>
                     </div>
                   </div>
@@ -240,21 +232,19 @@ const Projects: React.FC<ProjectsProps> = ({
           );
         })}
 
-        {/* View All Projects Button */}
+        {/* View All Button */}
         {hasMoreProjects && (
-          <div className="flex justify-center items-center w-full">
-            <div className="relative flex justify-center items-center w-full h-full  overflow-hidden">
-              <button
-                onClick={() => router.push("/projects")}
-                className="group flex items-center gap-3 bg-black dark:bg-white  px-12 py-6 rounded-full font-bold text-white dark:text-black text-lg"
-              >
-                <span>{t.buttons.viewAll}</span>
-                <ArrowUpRight
-                  size={24}
-                  className="group-hover:rotate-45 transition-transform"
-                />
-              </button>
-            </div>
+          <div className="mt-8 flex w-full items-center justify-center">
+            <button
+              onClick={() => router.push("/projects")}
+              className="btn-primary group flex items-center gap-3 text-base z-10"
+            >
+              <span>{t.buttons.viewAll}</span>
+              <ArrowUpRight
+                size={18}
+                className="transition-transform group-hover:rotate-45"
+              />
+            </button>
           </div>
         )}
       </div>

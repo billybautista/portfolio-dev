@@ -3,13 +3,12 @@ import React, { useRef } from "react";
 
 const Stats: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const numberRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   const stats = [
-    { target: 15, suffix: "k+", label: "views", leadingZero: false },
-    { target: 4, suffix: "+", label: "years", leadingZero: true },
-    { target: 8, suffix: "+", label: "shipped", leadingZero: true },
-    { target: 5, suffix: "+", label: "clients", leadingZero: true },
+    { value: "15k+", label: "Page Views" },
+    { value: "4+", label: "Years Experience" },
+    { value: "8+", label: "Projects Shipped" },
+    { value: "5+", label: "Happy Clients" },
   ];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -21,48 +20,31 @@ const Stats: React.FC = () => {
   };
 
   return (
-    <section className="relative w-full bg-white/50 dark:bg-black/50 transition-colors duration-300 backdrop-blur-sm">
+    <section id="stats" className="relative w-full bg-background transition-colors duration-300">
       <div
         ref={containerRef}
-        className="grid grid-cols-2 md:grid-cols-4 border-t border-b border-zinc-200 dark:border-zinc-800 px-6 md:px-12"
+        className="grid grid-cols-2 border-y border-border md:grid-cols-4"
       >
         {stats.map((stat, index) => (
           <div
             key={index}
             onMouseMove={handleMouseMove}
-            className={`group relative flex flex-col items-center justify-center py-12 px-4 transition-colors duration-300 border-l border-zinc-200 dark:border-zinc-800  ${
-              index === stats.length - 1
-                ? "border-r border-zinc-200 dark:border-zinc-800"
-                : ""
+            className={`group relative flex flex-col items-center justify-center px-4 py-16 transition-colors duration-300 ${
+              index !== 0 ? "border-l border-border" : ""
             }`}
           >
-            {/* Spotlight Effect - Light Mode (Black Glow) */}
+            {/* Spotlight Effect */}
             <div
-              className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 dark:hidden"
+              className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
               style={{
-                background: `radial-gradient(400px circle at var(--x) var(--y), rgba(0, 0, 0, 0.05), transparent 40%)`,
+                background: `radial-gradient(400px circle at var(--x) var(--y), var(--border), transparent 40%)`,
               }}
             />
 
-            {/* Spotlight Effect - Dark Mode (White Glow) */}
-            <div
-              className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden dark:block"
-              style={{
-                background: `radial-gradient(400px circle at var(--x) var(--y), rgba(255, 255, 255, 0.1), transparent 40%)`,
-              }}
-            />
-
-            <h3 className="relative z-10 text-3xl md:text-5xl font-bold text-black dark:text-white mb-2 tracking-tight flex items-baseline">
-              <span
-                ref={(el) => {
-                  numberRefs.current[index] = el;
-                }}
-              >
-                {stat.leadingZero ? "00" : "0"}
-              </span>
-              <span>{stat.suffix}</span>
+            <h3 className="relative z-10 mb-2 font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+              {stat.value}
             </h3>
-            <p className="relative z-10 text-[10px] md:text-xs font-mono text-zinc-500 dark:text-zinc-400 uppercase tracking-widest text-center">
+            <p className="relative z-10 text-xs font-medium uppercase tracking-widest text-foreground-subtle">
               {stat.label}
             </p>
           </div>

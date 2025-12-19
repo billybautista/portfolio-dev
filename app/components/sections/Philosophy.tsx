@@ -2,11 +2,12 @@ import TextReveal from "../TextReveal";
 
 const Philosophy = () => {
   return (
-    <section className="px-6 md:px-12 py-20">
-      <div className="w-full transition-colors duration-300">
+    <section className="section-padding py-32">
+      <div className="mx-auto max-w-4xl">
+        <span className="section-label mb-6 block text-center">Philosophy</span>
         <TextReveal
           type="words"
-          className="font-light text-zinc-600 dark:text-zinc-400 text-2xl md:text-4xl"
+          className="text-center text-2xl font-medium leading-relaxed text-foreground-muted md:text-3xl lg:text-4xl"
         >
           Every pixel matters. From the database schema in PostgreSQL to the
           animation frame in GSAP, I ensure every layer of the application is

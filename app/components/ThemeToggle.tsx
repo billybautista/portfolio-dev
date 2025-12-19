@@ -46,7 +46,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 bg-zinc-100 transition-all hover:bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface transition-all hover:border-border-hover hover:bg-surface-elevated"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       {isDark ? (
@@ -55,7 +55,7 @@ export default function ThemeToggle() {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
           className="h-5 w-5 text-amber-400"
@@ -76,10 +76,10 @@ export default function ThemeToggle() {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="h-5 w-5 text-zinc-700"
+          className="h-5 w-5 text-foreground"
         >
           <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
         </svg>
