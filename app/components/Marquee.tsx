@@ -15,7 +15,7 @@ const Marquee: React.FC = () => {
   ];
 
   return (
-    <div className="w-full py-10 bg-[#FDFBF7] dark:bg-black transition-colors duration-300 overflow-hidden">
+    <div className="w-full py-10 bg-[#FDFBF7] dark:bg-black transition-colors duration-300 overflow-hidden px-6 md:px-12">
       {/* Mask for fade edges */}
       <div
         className="w-full"

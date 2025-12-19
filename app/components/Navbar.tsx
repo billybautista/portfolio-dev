@@ -42,6 +42,12 @@ export default function Navbar() {
             >
               work
             </Link>
+            <Link
+              href="#blogs"
+              className="font-medium text-zinc-600 dark:hover:text-white dark:text-zinc-400 text-base transition-colors"
+            >
+              blog
+            </Link>
 
             <div className="flex items-center gap-4 pl-6 border-zinc-200 dark:border-zinc-800 border-l">
               {/* Theme Toggle */}

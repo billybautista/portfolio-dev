@@ -51,12 +51,12 @@ export default function RootLayout({
       >
         <GSAPProvider>
           <Navbar />
-          <main className="min-h-screen mx-auto px-6 md:px-[60px] 2xl:px-[200px] w-full">
-            <div className="bg-white dark:bg-black border-x border-zinc-200 dark:border-zinc-800 min-h-screen transition-colors duration-300">
+          <main className="min-h-screen mx-auto w-full">
+            <div className="bg-white dark:bg-black min-h-screen transition-colors duration-300">
               {children}
+              <Footer />
             </div>
           </main>
-          <Footer />
         </GSAPProvider>
       </body>
     </html>

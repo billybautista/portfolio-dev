@@ -24,14 +24,14 @@ const Stats: React.FC = () => {
     <section className="relative w-full bg-white/50 dark:bg-black/50 transition-colors duration-300 backdrop-blur-sm">
       <div
         ref={containerRef}
-        className="grid grid-cols-2 md:grid-cols-4 border-t border-zinc-200 dark:border-zinc-800"
+        className="grid grid-cols-2 md:grid-cols-4 border-t border-b border-zinc-200 dark:border-zinc-800 px-6 md:px-12"
       >
         {stats.map((stat, index) => (
           <div
             key={index}
             onMouseMove={handleMouseMove}
-            className={`group relative flex flex-col items-center justify-center py-12 px-4 transition-colors duration-300 ${
-              index !== stats.length - 1
+            className={`group relative flex flex-col items-center justify-center py-12 px-4 transition-colors duration-300 border-l border-zinc-200 dark:border-zinc-800  ${
+              index === stats.length - 1
                 ? "border-r border-zinc-200 dark:border-zinc-800"
                 : ""
             }`}
