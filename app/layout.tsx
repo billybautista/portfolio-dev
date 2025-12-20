@@ -39,22 +39,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://bbautista.dev",
-    title: "Billy Bautista | Software Engineer",
+    title: "Software Engineer",
     description:
       "Software engineer crafting elegant digital experiences with modern web technologies.",
-    siteName: "Billy Bautista Portfolio",
+    siteName: "Portfolio",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Billy Bautista - Software Engineer",
+        alt: "Software Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Billy Bautista | Software Engineer",
+    title: "Software Engineer",
     description:
       "Software engineer crafting elegant digital experiences with modern web technologies.",
     images: ["/og.png"],
