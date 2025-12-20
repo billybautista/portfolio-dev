@@ -1,19 +1,111 @@
 "use client";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LanguageSelector from "./LanguageSelector";
 import ThemeToggle from "./ThemeToggle";
 
+const navLinks = [
+  { href: "/", label: "Home", id: "home" },
+  { href: "#about", label: "About", id: "about" },
+  { href: "#projects", label: "Work", id: "projects" },
+  { href: "#contact", label: "Contact", id: "contact" },
+];
+
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
+  const sectionElementsRef = useRef<
+    Map<string, { element: HTMLElement; ratio: number }>
+  >(new Map());
 
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "#about", label: "About" },
-    { href: "#projects", label: "Work" },
-    { href: "#contact", label: "Contact" },
-  ];
+  useEffect(() => {
+    // Use Intersection Observer for accurate section detection
+    const observerOptions = {
+      root: null,
+      rootMargin: "-25% 0px -65% 0px",
+      threshold: [0, 0.25, 0.5, 0.75, 1],
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        const id = entry.target.id;
+        if (!id) return;
+
+        if (entry.isIntersecting) {
+          sectionElementsRef.current.set(id, {
+            element: entry.target as HTMLElement,
+            ratio: entry.intersectionRatio,
+          });
+        } else {
+          const existing = sectionElementsRef.current.get(id);
+          if (existing) {
+            sectionElementsRef.current.set(id, {
+              ...existing,
+              ratio: 0,
+            });
+          }
+        }
+
+        // Find the section with the highest intersection ratio
+        let maxRatio = 0;
+        let activeId = "";
+
+        sectionElementsRef.current.forEach((value, key) => {
+          if (value.ratio > maxRatio) {
+            maxRatio = value.ratio;
+            activeId = key;
+          }
+        });
+
+        // If no section is significantly visible, check scroll position for home
+        if (maxRatio < 0.1 && window.scrollY < 300) {
+          setActiveSection("home");
+        } else if (activeId) {
+          setActiveSection(activeId);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      observerCallback,
+      observerOptions
+    );
+
+    // Observe all sections
+    const observeSections = () => {
+      navLinks.forEach((link) => {
+        const element = document.getElementById(link.id);
+        if (element) {
+          observer.observe(element);
+        }
+      });
+    };
+
+    // Initial setup with a small delay to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      observeSections();
+      // Set initial active section
+      if (window.scrollY < 300) {
+        setActiveSection("home");
+      }
+    }, 100);
+
+    // Also handle scroll to top for home section
+    const handleScroll = () => {
+      if (window.scrollY < 300) {
+        setActiveSection("home");
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <>
@@ -33,15 +125,27 @@ export default function Navbar() {
 
             {/* Desktop Navigation */}
             <nav className="hidden items-center justify-center gap-1 lg:flex">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="px-4 py-2 text-sm font-medium text-foreground-muted transition-colors hover:text-foreground"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const isActive =
+                  (link.id === "home" && activeSection === "home") ||
+                  (link.id !== "home" && activeSection === link.id);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`relative px-4 py-2 text-sm font-medium transition-colors ${
+                      isActive
+                        ? "text-foreground"
+                        : "text-foreground-muted hover:text-foreground"
+                    }`}
+                  >
+                    {link.label}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-foreground transition-all duration-300" />
+                    )}
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* Right Section */}
@@ -79,21 +183,33 @@ export default function Navbar() {
         }`}
       >
         <div className="flex h-full flex-col items-center justify-center gap-8">
-          {navLinks.map((link, index) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`font-display text-3xl font-bold text-foreground transition-all duration-300 hover:text-foreground-muted ${
-                isMobileMenuOpen
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-4"
-              }`}
-              style={{ transitionDelay: `${index * 50 + 100}ms` }}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link, index) => {
+            const isActive =
+              (link.id === "home" && activeSection === "home") ||
+              (link.id !== "home" && activeSection === link.id);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`relative font-display text-3xl font-bold transition-all duration-300 ${
+                  isActive
+                    ? "text-foreground"
+                    : "text-foreground-muted hover:text-foreground"
+                } ${
+                  isMobileMenuOpen
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-4"
+                }`}
+                style={{ transitionDelay: `${index * 50 + 100}ms` }}
+              >
+                {link.label}
+                {isActive && (
+                  <span className="absolute -bottom-2 left-1/2 h-1 w-12 -translate-x-1/2 rounded-full bg-foreground transition-all duration-300" />
+                )}
+              </Link>
+            );
+          })}
           <Link
             href="#contact"
             onClick={() => setIsMobileMenuOpen(false)}

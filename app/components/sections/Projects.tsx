@@ -234,7 +234,7 @@ const Projects: React.FC<ProjectsProps> = ({
 
         {/* View All Button */}
         {hasMoreProjects && (
-          <div className="mt-8 flex w-full items-center justify-center">
+          <div className="p-4 flex w-full items-center justify-center">
             <button
               onClick={() => router.push("/projects")}
               className="btn-primary group flex items-center gap-3 text-base z-10"
