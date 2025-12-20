@@ -7,11 +7,6 @@ const Hero = () => {
       id="home"
       className="relative flex flex-col justify-center section-padding min-h-screen"
     >
-      {/* Subtle gradient orb */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
-        <div className="absolute h-[600px] w-[600px] rounded-full bg-gradient-to-br from-neutral-200/40 via-neutral-300/20 to-transparent blur-3xl dark:from-neutral-800/30 dark:via-neutral-900/20 animate-glow" />
-      </div>
-
       {/* Grid pattern overlay */}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30" />
 

@@ -150,9 +150,28 @@ const FallingPills: React.FC<FallingPillsProps> = ({ triggerRef }) => {
       const mouseElement = mouseConstraint.mouse.element;
       const mouseAny = mouseConstraint.mouse as unknown as {
         mousewheel: EventListener;
+        mousedown: EventListener;
+        mousemove: EventListener;
+        mouseup: EventListener;
       };
+
+      // Remove default blocking listeners
       mouseElement.removeEventListener("mousewheel", mouseAny.mousewheel);
       mouseElement.removeEventListener("DOMMouseScroll", mouseAny.mousewheel);
+      mouseElement.removeEventListener("touchstart", mouseAny.mousedown);
+      mouseElement.removeEventListener("touchmove", mouseAny.mousemove);
+      mouseElement.removeEventListener("touchend", mouseAny.mouseup);
+
+      // Re-add touch listeners as passive to allow scrolling
+      mouseElement.addEventListener("touchstart", mouseAny.mousedown, {
+        passive: true,
+      });
+      mouseElement.addEventListener("touchmove", mouseAny.mousemove, {
+        passive: true,
+      });
+      mouseElement.addEventListener("touchend", mouseAny.mouseup, {
+        passive: true,
+      });
 
       const handleWheel = (e: WheelEvent) => {
         window.scrollBy(0, e.deltaY);

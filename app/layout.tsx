@@ -18,9 +18,63 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bbautista.dev"),
   title: "Billy Bautista | Software Engineer",
   description:
     "Software engineer crafting elegant digital experiences with modern web technologies.",
+  keywords: [
+    "software engineer",
+    "web developer",
+    "full stack developer",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "portfolio",
+    "frontend developer",
+    "backend developer",
+  ],
+  authors: [{ name: "Billy Bautista" }],
+  creator: "Billy Bautista",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://bbautista.dev",
+    title: "Billy Bautista | Software Engineer",
+    description:
+      "Software engineer crafting elegant digital experiences with modern web technologies.",
+    siteName: "Billy Bautista Portfolio",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Billy Bautista - Software Engineer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Billy Bautista | Software Engineer",
+    description:
+      "Software engineer crafting elegant digital experiences with modern web technologies.",
+    images: ["/og.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    // Add your verification codes here when available
+    // google: "your-google-verification-code",
+    // yandex: "your-yandex-verification-code",
+  },
 };
 
 const themeScript = `
