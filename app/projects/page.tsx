@@ -2,96 +2,7 @@
 
 import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 import Link from "next/link";
-
-interface Project {
-  title: string;
-  status: string;
-  date: string;
-  description: string;
-  tags: string[];
-  link: string | null;
-  repo: string | null;
-}
-
-const projects: Project[] = [
-  {
-    title: "Arbitrage",
-    status: "Completed",
-    date: "2024",
-    description:
-      "ArbitrageCard is the only discount gift card platform designed for arbitrage sellers. The Chrome extension streamlines management by generating multiple cards for exact amounts, facilitating detail copying and order number assignment.",
-    tags: ["Plasmo", "React Query", "TypeScript"],
-    link: "https://chromewebstore.google.com/detail/kblmbphnebmpalhdhgjabemaapbppjfj?utm_source=item-share-cb",
-    repo: null,
-  },
-  {
-    title: "Maui",
-    status: "In Progress",
-    date: "2024",
-    description:
-      "Full-stack business management platform built with React Native and Node.js. Features RESTful API architecture, PostgreSQL database with Prisma ORM, and real-time data synchronization. Comprehensive dashboard for managing all business operations.",
-    tags: [
-      "React Native",
-      "Node.js",
-      "Express",
-      "PostgreSQL",
-      "Prisma",
-      "TypeScript",
-    ],
-    link: "https://maui-app.com/es",
-    repo: null,
-  },
-  {
-    title: "Odin",
-    status: "Coming Soon",
-    date: "2024",
-    description:
-      "Full-stack job search management platform with Chrome extension. Built with NestJS backend API, Supabase for database and authentication, and Plasmo-based extension. Includes automated application tracking, analytics, and job matching algorithms.",
-    tags: ["NestJS", "TypeScript", "Supabase", "PostgreSQL", "Plasmo", "Vite"],
-    link: "https://odinhr.co/",
-    repo: null,
-  },
-  {
-    title: "Fido",
-    status: "Completed",
-    date: "2023",
-    description:
-      "Complete veterinary management system built with Django REST Framework. Includes PostgreSQL database, RESTful API architecture, user authentication, and full CRUD operations for managing pets, owners, appointments, and medical records.",
-    tags: ["Python", "Django", "Django REST", "PostgreSQL", "REST API"],
-    link: null,
-    repo: null,
-  },
-  {
-    title: "Abrazo",
-    status: "In Progress",
-    date: "2024",
-    description:
-      "Full-stack platform for the tango community with Node.js backend and React frontend. Includes event management system, user profiles, real-time notifications, and RESTful API. Mobile app currently in development.",
-    tags: ["React", "Node.js", "Express", "TypeScript", "REST API"],
-    link: "https://www.abrazo.app/",
-    repo: null,
-  },
-  {
-    title: "Portero",
-    status: "Completed",
-    date: "2024",
-    description:
-      "Full-stack AI security platform built with Next.js and TypeScript. Includes server API routes, database integration, authentication system, and real-time monitoring. Acts as guardian for AI-powered systems, ensuring data control and regulatory compliance.",
-    tags: ["Next.js", "TypeScript", "API Routes", "PostgreSQL", "Auth"],
-    link: "https://portero.ai/",
-    repo: null,
-  },
-  {
-    title: "Mi Pata",
-    status: "Completed",
-    date: "2024",
-    description:
-      "Full-stack social platform for pet lovers built with React Native. Includes Node.js backend API, real-time features, image upload system, and comprehensive user management. The largest community of pets and those who love them.",
-    tags: ["React Native", "Node.js", "TypeScript", "React Query", "REST API"],
-    link: "https://mipata.pe/",
-    repo: null,
-  },
-];
+import { projects } from "./data";
 
 const getStatusColor = (status: string) => {
   switch (status.toLowerCase()) {
@@ -117,9 +28,12 @@ export default function ProjectsPage() {
           </span>
           <Link
             href="/"
-            className="flex items-center gap-2 text-sm font-medium text-foreground-muted transition-colors hover:text-foreground"
+            className="group flex items-center gap-2 rounded-full border border-border bg-surface/50 px-4 py-2 text-sm font-medium text-foreground-muted transition-all hover:bg-surface hover:text-foreground"
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft
+              size={16}
+              className="transition-transform group-hover:-translate-x-1"
+            />
             Back to Home
           </Link>
         </div>
@@ -151,10 +65,15 @@ export default function ProjectsPage() {
                       <div className="h-12 flex-1 rounded bg-border/40" />
                     </div>
                     <div className="h-2 w-3/4 rounded bg-border/60" />
-                    <ArrowUpRight
-                      size={28}
-                      className="absolute right-4 top-4 text-foreground-subtle/30"
-                    />
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="absolute inset-0 z-10"
+                    >
+                      <ArrowUpRight
+                        size={28}
+                        className="absolute right-4 top-4 text-foreground-subtle/30"
+                      />
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -171,9 +90,12 @@ export default function ProjectsPage() {
                 </div>
 
                 {/* Title */}
-                <h2 className="mb-3 font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="mb-3 font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl hover:text-primary transition-colors"
+                >
                   {project.title}
-                </h2>
+                </Link>
 
                 {/* Description */}
                 <p className="mb-6 text-base leading-relaxed text-foreground-muted">
@@ -194,18 +116,26 @@ export default function ProjectsPage() {
 
                 {/* Actions */}
                 <div className="mt-auto flex flex-wrap items-center gap-3">
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    className="btn-primary group/btn flex items-center gap-2"
+                  >
+                    <span>View Details</span>
+                    <ArrowUpRight
+                      size={16}
+                      className="transition-transform group-hover/btn:rotate-45"
+                    />
+                  </Link>
+
                   {project.link && (
                     <a
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn-primary group/btn flex items-center gap-2"
+                      className="btn-secondary flex items-center gap-2"
                     >
-                      <span>View Project</span>
-                      <ArrowUpRight
-                        size={16}
-                        className="transition-transform group-hover/btn:rotate-45"
-                      />
+                      <span>Live Demo</span>
+                      <ArrowUpRight size={16} />
                     </a>
                   )}
 
@@ -219,12 +149,6 @@ export default function ProjectsPage() {
                       <Github size={16} />
                       <span>Source Code</span>
                     </a>
-                  )}
-
-                  {!project.link && !project.repo && (
-                    <span className="text-sm text-foreground-subtle">
-                      Private project
-                    </span>
                   )}
                 </div>
               </div>

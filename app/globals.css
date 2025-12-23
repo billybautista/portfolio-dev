@@ -97,6 +97,7 @@
   scroll-behavior: smooth;
 } */
 
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -112,23 +113,6 @@ body {
   color: var(--background);
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--border-hover);
-}
 
 /* ═══════════════════════════════════════════════════════════════════
    TYPOGRAPHY UTILITIES

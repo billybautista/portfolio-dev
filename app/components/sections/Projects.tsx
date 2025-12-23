@@ -2,16 +2,7 @@
 import { ArrowUpRight, Github } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useMemo, useRef } from "react";
-
-interface Project {
-  title: string;
-  description: string;
-  date: string;
-  status: string;
-  tags: string[];
-  link?: string;
-  repo?: string;
-}
+import { projects } from "../../projects/data";
 
 interface ProjectsProps {
   limit?: number;
@@ -34,85 +25,14 @@ const Projects: React.FC<ProjectsProps> = ({
         demo: "Live Demo",
         code: "Source",
         viewAll: "View All Projects",
+        details: "View Details",
       },
-      items: [
-        {
-          title: "Arbitrage",
-          description:
-            "A sophisticated trading platform that enables users to identify and capitalize on price discrepancies across multiple exchanges in real-time.",
-          date: "2024",
-          status: "Production",
-          tags: ["Next.js", "TypeScript", "WebSocket", "Trading"],
-          link: "https://arbitrage.example.com",
-          repo: "https://github.com/example/arbitrage",
-        },
-        {
-          title: "Maui",
-          description:
-            "A comprehensive project management tool designed for remote teams, featuring real-time collaboration and advanced task tracking capabilities.",
-          date: "2024",
-          status: "Production",
-          tags: ["React", "Node.js", "PostgreSQL", "GraphQL"],
-          link: "https://maui.example.com",
-          repo: "https://github.com/example/maui",
-        },
-        {
-          title: "Odin",
-          description:
-            "An AI-powered analytics dashboard that transforms complex data into actionable insights with intuitive visualizations and predictive modeling.",
-          date: "2023",
-          status: "Production",
-          tags: ["Next.js", "Python", "Machine Learning", "D3.js"],
-          link: "https://odin.example.com",
-          repo: "https://github.com/example/odin",
-        },
-        {
-          title: "Fido",
-          description:
-            "A pet care management application that helps pet owners track health records, appointments, and daily care routines for their furry friends.",
-          date: "2023",
-          status: "Production",
-          tags: ["React Native", "Express", "MongoDB", "Stripe"],
-          link: "https://fido.example.com",
-          repo: "https://github.com/example/fido",
-        },
-        {
-          title: "Abrazo",
-          description:
-            "A social networking platform focused on connecting communities through shared interests and local events, fostering meaningful relationships.",
-          date: "2023",
-          status: "Production",
-          tags: ["Next.js", "Prisma", "PostgreSQL", "Redis"],
-          link: "https://abrazo.example.com",
-          repo: "https://github.com/example/abrazo",
-        },
-        {
-          title: "Portero",
-          description:
-            "A smart building management system that integrates IoT devices, access control, and facility management into a unified platform.",
-          date: "2022",
-          status: "Production",
-          tags: ["Nest.js", "TypeScript", "IoT", "WebSocket"],
-          link: "https://portero.example.com",
-          repo: "https://github.com/example/portero",
-        },
-        {
-          title: "Mi Pata",
-          description:
-            "An e-commerce platform specializing in artisanal products, featuring a seamless shopping experience with integrated payment and inventory management.",
-          date: "2022",
-          status: "Production",
-          tags: ["Next.js", "Django", "PostgreSQL", "Stripe"],
-          link: "https://mipata.example.com",
-          repo: "https://github.com/example/mipata",
-        },
-      ],
     }),
     []
   );
 
-  const projectsToShow = limit ? t.items.slice(0, limit) : t.items;
-  const hasMoreProjects = limit && t.items.length > limit;
+  const projectsToShow = limit ? projects.slice(0, limit) : projects;
+  const hasMoreProjects = limit && projects.length > limit;
 
   return (
     <section id="projects" className="relative w-full bg-background">
@@ -126,7 +46,7 @@ const Projects: React.FC<ProjectsProps> = ({
 
       {/* Projects Grid */}
       <div className="relative z-10 pb-20 pt-16">
-        {projectsToShow.map((project: Project, idx: number) => {
+        {projectsToShow.map((project, idx) => {
           return (
             <div
               key={idx}
@@ -149,7 +69,10 @@ const Projects: React.FC<ProjectsProps> = ({
                   </div>
 
                   {/* Title */}
-                  <h3 className="mb-4 font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+                  <h3
+                    className="mb-4 font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl cursor-pointer hover:text-primary transition-colors"
+                    onClick={() => router.push(`/projects/${project.slug}`)}
+                  >
                     {project.title}
                   </h3>
 
@@ -172,18 +95,26 @@ const Projects: React.FC<ProjectsProps> = ({
 
                   {/* Buttons */}
                   <div className="flex flex-wrap items-center gap-3">
+                    <button
+                      onClick={() => router.push(`/projects/${project.slug}`)}
+                      className="btn-primary group flex items-center gap-2"
+                    >
+                      <span>{t.buttons.details}</span>
+                      <ArrowUpRight
+                        size={16}
+                        className="transition-transform group-hover:rotate-45"
+                      />
+                    </button>
+
                     {project.link && (
                       <a
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn-primary group flex items-center gap-2"
+                        className="btn-secondary group flex items-center gap-2"
                       >
                         <span>{t.buttons.demo}</span>
-                        <ArrowUpRight
-                          size={16}
-                          className="transition-transform group-hover:rotate-45"
-                        />
+                        <ArrowUpRight size={16} />
                       </a>
                     )}
 
@@ -234,7 +165,7 @@ const Projects: React.FC<ProjectsProps> = ({
 
         {/* View All Button */}
         {hasMoreProjects && (
-          <div className="p-4 flex w-full items-center justify-center">
+          <div className="flex w-full items-center justify-center">
             <button
               onClick={() => router.push("/projects")}
               className="btn-primary group flex items-center gap-3 text-base z-10"
