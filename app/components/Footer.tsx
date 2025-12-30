@@ -1,7 +1,6 @@
 "use client";
 import {
   ArrowUp,
-  ChevronDown,
   Folder,
   Github,
   Linkedin,
@@ -66,7 +65,6 @@ const Footer = () => {
   });
   const [currentTime, setCurrentTime] = useState<string>("");
   const [emailError, setEmailError] = useState<boolean>(false);
-  const [cursorPosition, setCursorPosition] = useState<number>(0);
   const [hasInteracted, setHasInteracted] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
@@ -88,15 +86,20 @@ const Footer = () => {
   useEffect(() => {
     if (hasInteracted && inputRef.current) {
       inputRef.current.focus();
-      if (inputRef.current instanceof HTMLTextAreaElement) {
-        inputRef.current.setSelectionRange(0, 0);
-        setTimeout(() => setCursorPosition(0), 0);
-      }
     }
     if (step !== "email") {
       setTimeout(() => setEmailError(false), 0);
     }
   }, [step, hasInteracted]);
+
+  // Auto-resize textarea for message step
+  useEffect(() => {
+    if (step === "message" && inputRef.current) {
+      const textarea = inputRef.current as HTMLTextAreaElement;
+      textarea.style.height = "auto";
+      textarea.style.height = `${Math.max(40, textarea.scrollHeight)}px`;
+    }
+  }, [inputValue, step]);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -142,7 +145,6 @@ const Footer = () => {
     }
 
     setInputValue("");
-    setCursorPosition(0);
   };
 
   const handleCancel = () => {
@@ -150,7 +152,6 @@ const Footer = () => {
     setHistory([]);
     setFormData({ email: "", name: "", message: "" });
     setInputValue("");
-    setCursorPosition(0);
     setEmailError(false);
     setHasInteracted(false);
   };
@@ -160,15 +161,8 @@ const Footer = () => {
     if (!hasInteracted) {
       setHasInteracted(true);
     }
-    setCursorPosition(e.target.selectionStart || 0);
     if (step === "email" && emailError) {
       setEmailError(false);
-    }
-  };
-
-  const handleSelectionChange = () => {
-    if (inputRef.current && inputRef.current instanceof HTMLTextAreaElement) {
-      setCursorPosition(inputRef.current.selectionStart || 0);
     }
   };
 
@@ -183,24 +177,6 @@ const Footer = () => {
       e.preventDefault();
       handleNextStep();
       return;
-    }
-
-    if (
-      e.key === "ArrowLeft" ||
-      e.key === "ArrowRight" ||
-      e.key === "ArrowUp" ||
-      e.key === "ArrowDown" ||
-      e.key === "Home" ||
-      e.key === "End"
-    ) {
-      setTimeout(() => {
-        if (
-          inputRef.current &&
-          inputRef.current instanceof HTMLTextAreaElement
-        ) {
-          setCursorPosition(inputRef.current.selectionStart || 0);
-        }
-      }, 0);
     }
   };
 
@@ -260,32 +236,22 @@ const Footer = () => {
               {history.map((item, idx) => (
                 <div
                   key={idx}
-                  className="mb-4 opacity-60 transition-opacity duration-300 hover:opacity-100"
+                  className="mb-4 transition-opacity duration-300 hover:opacity-100"
                 >
-                  <div className="mb-2 font-medium text-foreground-subtle">
-                    # {item.prompt}
-                  </div>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <div className="flex w-fit items-center gap-2 rounded border border-border bg-surface-elevated px-2 py-1 text-xs text-foreground-muted">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex w-fit items-center gap-2 py-1 text-sm text-[#DB2777] dark:text-[#FF5FFF]">
                       <Folder size={12} />
                       <span>~/contact/{item.type}</span>
                     </div>
-                    <div className="min-w-0 flex-1 wrap-break-word whitespace-pre-wrap text-foreground">
-                      {item.answer}
+                    <div className="font-medium text-sm text-emerald-600 dark:text-[#00FF00]">
+                      {item.prompt}
                     </div>
+                  </div>
+                  <div className="min-w-0 flex-1 wrap-break-word whitespace-pre-wrap text-foreground">
+                    {item.answer}
                   </div>
                 </div>
               ))}
-
-              {/* Current Prompt */}
-              {step !== "completed" && (
-                <div className="mb-3 font-medium text-foreground">
-                  # {step === "email" && "Could you share your email with me?"}
-                  {step === "name" && "Great! And may I know your name?"}
-                  {step === "message" &&
-                    "Awesome, now tell us how we can assist you today."}
-                </div>
-              )}
 
               {/* Completed */}
               {step === "completed" && (
@@ -317,113 +283,96 @@ const Footer = () => {
 
             {/* Input Area */}
             {step !== "completed" && (
-              <div className="border-t border-border bg-surface-elevated p-5 md:p-6">
-                <div className="flex flex-col">
-                  {/* Context */}
-                  <div className="mb-2 flex items-center gap-2">
-                    <div className="flex w-fit items-center gap-2 rounded border border-border bg-surface px-2 py-1 text-xs text-foreground-muted">
-                      <Folder size={12} />
-                      <span>~/contact/{step}</span>
-                    </div>
-                  </div>
-
-                  {/* Editor */}
-                  <div
-                    className={`flex w-full flex-col overflow-hidden rounded-lg border transition-all ${
-                      emailError
-                        ? "border-red-500/50 bg-red-500/5 focus-within:border-red-500"
-                        : "border-border bg-background focus-within:border-border-hover"
-                    } ${step === "message" ? "min-h-[120px]" : "h-[50px]"}`}
-                  >
-                    <div className="relative flex-1 p-3">
-                      <textarea
-                        ref={inputRef as React.RefObject<HTMLTextAreaElement>}
-                        value={inputValue}
-                        onChange={handleInputChange}
-                        onKeyDown={handleKeyDown}
-                        onSelect={handleSelectionChange}
-                        onMouseUp={handleSelectionChange}
-                        onKeyUp={handleSelectionChange}
-                        className="absolute inset-0 z-10 h-full w-full cursor-text resize-none p-3 opacity-0"
-                        spellCheck={false}
-                      />
-                      <div className="min-h-[24px] whitespace-pre-wrap wrap-break-word leading-relaxed text-foreground">
-                        {inputValue.slice(0, cursorPosition)}
-                        <span className="ml-px inline-block h-5 w-0.5 animate-pulse bg-accent align-middle" />
-                        {inputValue.slice(cursorPosition)}
+              <div className="p-2">
+                <div className="rounded-xl border border-border bg-surface-elevated pb-3 pt-4 px-2 md:px-3">
+                  <div className="flex flex-col">
+                    {/* Context */}
+                    <div className="flex flex-col gap-2 md:flex-row md:items-center">
+                      <div className="flex w-fit items-center gap-2 rounded border border-border bg-surface px-2 py-1 text-xs opacity-80 text-[#DB2777] dark:text-[#FF5FFF]">
+                        <Folder size={12} />
+                        <span>~/contact/{step}</span>
                       </div>
-                      {!inputValue && (
-                        <div className="pointer-events-none absolute left-3 top-3 select-none text-foreground-subtle">
-                          {step === "email"
-                            ? "john@example.com"
-                            : step === "name"
-                            ? "John Doe"
-                            : "Type your message..."}
-                        </div>
-                      )}
+                      <div className="font-normal text-foreground text-sm">
+                        {step === "email" &&
+                          "Could you share your email with me?"}
+                        {step === "name" && "Great! And may I know your name?"}
+                        {step === "message" &&
+                          "Awesome, now tell us how we can assist you today."}
+                      </div>
                     </div>
 
-                    {step === "message" && (
-                      <div className="flex items-center justify-between border-t border-border px-3 py-2">
-                        <div className="flex items-center gap-2">
-                          <button className="rounded p-1 text-foreground-subtle transition-colors hover:bg-border hover:text-foreground">
-                            <Terminal size={14} />
-                          </button>
-                        </div>
-                        <button className="flex items-center gap-1.5 rounded border border-border px-2 py-1 text-xs text-foreground-muted transition-colors hover:bg-surface">
-                          <span>auto</span>
-                          <ChevronDown size={10} />
-                        </button>
+                    {/* Editor */}
+                    <div
+                      className={`flex w-full flex-col overflow-hidden transition-all ${
+                        emailError
+                          ? "border-red-500/50 bg-red-500/5 focus-within:border-red-500"
+                          : "border-none focus-within:border-border-hover"
+                      } ${step === "message" ? "" : "h-[50px]"}`}
+                    >
+                      <div
+                        className={`relative ${step === "message" ? "py-3" : "flex-1 flex items-center"}`}
+                      >
+                        <textarea
+                          ref={inputRef as React.RefObject<HTMLTextAreaElement>}
+                          value={inputValue}
+                          onChange={handleInputChange}
+                          onKeyDown={handleKeyDown}
+                          placeholder={
+                            step === "email"
+                              ? "john@example.com"
+                              : step === "name"
+                                ? "John Doe"
+                                : "Type your message..."
+                          }
+                          className={`w-full resize-none bg-transparent text-foreground outline-none border-none placeholder:text-foreground-subtle ${
+                            step === "message"
+                              ? "min-h-[50px]"
+                              : "h-full leading-[50px]"
+                          }`}
+                          spellCheck={false}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Error */}
+                    {emailError && step === "email" && (
+                      <div className="mt-2 px-1 font-mono text-xs text-red-500">
+                        zsh: invalid email format
                       </div>
                     )}
-                  </div>
 
-                  {/* Error */}
-                  {emailError && step === "email" && (
-                    <div className="mt-2 px-1 font-mono text-xs text-red-500">
-                      zsh: invalid email format
-                    </div>
-                  )}
-
-                  {/* Footer */}
-                  <div className="mt-3 flex items-center justify-between px-1">
-                    <div className="select-none font-sans text-[10px] text-foreground-subtle">
-                      {step === "message" ? (
-                        <>
-                          Press{" "}
-                          <span className="mx-0.5 rounded bg-border px-1 py-0.5 text-foreground-muted">
-                            ⌘ + Enter
-                          </span>{" "}
-                          to send
-                        </>
-                      ) : (
-                        <>
+                    {/* Footer */}
+                    <div
+                      className={`flex items-center ${step === "message" ? "justify-end" : "justify-between"}`}
+                    >
+                      {step !== "message" && (
+                        <div className="flex w-fit items-center gap-2 rounded-md border border-border bg-surface py-1 px-2 text-[10px] text-foreground-muted">
                           Press{" "}
                           <span className="mx-0.5 rounded bg-border px-1 py-0.5 text-foreground-muted">
                             Enter
                           </span>{" "}
                           to continue
-                        </>
+                        </div>
+                      )}
+
+                      {step === "message" && (
+                        <div className="flex gap-2">
+                          <button
+                            onClick={handleCancel}
+                            className="rounded px-3 py-1.5 text-xs text-foreground-muted transition-colors hover:bg-border hover:text-foreground"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={handleNextStep}
+                            className="flex items-center gap-1.5 rounded bg-accent px-3 py-1.5 text-xs font-medium text-background transition-colors hover:bg-accent-hover"
+                          >
+                            <Send size={12} />
+                            <span>Send</span>
+                          </button>
+                        </div>
                       )}
                     </div>
-
-                    {step === "message" && (
-                      <div className="flex gap-2">
-                        <button
-                          onClick={handleCancel}
-                          className="rounded px-3 py-1.5 text-xs text-foreground-muted transition-colors hover:bg-border hover:text-foreground"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          onClick={handleNextStep}
-                          className="flex items-center gap-1.5 rounded bg-accent px-3 py-1.5 text-xs font-medium text-background transition-colors hover:bg-accent-hover"
-                        >
-                          <Send size={12} />
-                          <span>Send</span>
-                        </button>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>

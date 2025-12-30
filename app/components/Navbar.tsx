@@ -153,14 +153,6 @@ export default function Navbar() {
               <LanguageSelector />
               <ThemeToggle />
 
-              {/* CTA Button - Desktop */}
-              <Link
-                href="#contact"
-                className="hidden lg:flex btn-primary items-center gap-2"
-              >
-                Let&apos;s Talk
-              </Link>
-
               {/* Mobile Menu Button */}
               <button
                 className="relative z-50 flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-surface lg:hidden"
@@ -210,18 +202,6 @@ export default function Navbar() {
               </Link>
             );
           })}
-          <Link
-            href="#contact"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={`btn-primary mt-4 transition-all duration-300 ${
-              isMobileMenuOpen
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
-            style={{ transitionDelay: "300ms" }}
-          >
-            Let&apos;s Talk
-          </Link>
         </div>
       </div>
     </>
