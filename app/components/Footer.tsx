@@ -4,18 +4,13 @@ import {
   Folder,
   Github,
   Linkedin,
+  LucideIcon,
   RefreshCw,
   Send,
   Terminal,
-  Twitter,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type Step = "email" | "name" | "message" | "completed";
 
@@ -25,36 +20,30 @@ interface HistoryItem {
   answer: string;
 }
 
-function getThemeSnapshot(): boolean {
-  if (typeof window === "undefined") return false;
-  return document.documentElement.classList.contains("dark");
+interface SocialLink {
+  url: string;
+  icon: LucideIcon;
+  label: string;
+  hoverColor: string;
 }
 
-function subscribeToTheme(callback: () => void): () => void {
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.attributeName === "class") {
-        callback();
-      }
-    });
-  });
-
-  observer.observe(document.documentElement, { attributes: true });
-  return () => observer.disconnect();
-}
-
-function getServerSnapshot(): boolean {
-  return false;
-}
+const socialLinks: SocialLink[] = [
+  {
+    url: "https://github.com/billybautista",
+    icon: Github,
+    label: "GitHub",
+    hoverColor: "hover:text-[#333] dark:hover:text-white",
+  },
+  {
+    url: "https://linkedin.com/in/billy-bautista",
+    icon: Linkedin,
+    label: "LinkedIn",
+    hoverColor: "hover:text-[#0A66C2]",
+  },
+];
 
 const Footer = () => {
   const pathname = usePathname();
-  const isDark = useSyncExternalStore(
-    subscribeToTheme,
-    getThemeSnapshot,
-    getServerSnapshot
-  );
-  const theme = isDark ? "dark" : "light";
   const [step, setStep] = useState<Step>("email");
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -390,28 +379,19 @@ const Footer = () => {
         </div>
 
         <div className="flex items-center gap-6">
-          <div className="flex gap-4">
-            <a
-              href="#"
-              className="text-foreground-subtle transition-colors hover:text-foreground"
-              aria-label="GitHub"
-            >
-              <Github size={20} />
-            </a>
-            <a
-              href="#"
-              className="text-foreground-subtle transition-colors hover:text-foreground"
-              aria-label="LinkedIn"
-            >
-              <Linkedin size={20} />
-            </a>
-            <a
-              href="#"
-              className="text-foreground-subtle transition-colors hover:text-foreground"
-              aria-label="Twitter"
-            >
-              <Twitter size={20} />
-            </a>
+          <div className="flex gap-3">
+            {socialLinks.map(({ url, icon: Icon, label, hoverColor }) => (
+              <a
+                key={label}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground-subtle transition-all duration-200 hover:scale-110 hover:border-transparent hover:bg-surface-elevated ${hoverColor}`}
+                aria-label={label}
+              >
+                <Icon size={18} />
+              </a>
+            ))}
           </div>
 
           <button
