@@ -1,5 +1,12 @@
 import TextReveal from "../TextReveal";
 
+const aboutText = `
+  I am a Full Stack Engineer with 4 years of experience, specializing
+  in the JavaScript ecosystem. I build scalable backends with Nest.js
+  and TypeScript, modern frontends with React and Next.js, and mobile
+  applications using React Native.
+`;
+
 const About = () => {
   return (
     <section
@@ -12,10 +19,7 @@ const About = () => {
           type="words"
           className="font-display text-3xl font-semibold leading-snug tracking-tight text-foreground md:text-4xl lg:text-5xl"
         >
-          I am a full-stack developer with 4 years of experience building
-          robust web applications. I specialize in the JavaScript ecosystem,
-          leveraging Node.js and TypeScript to create scalable backends, and
-          React with Next.js for highly interactive frontends.
+          {aboutText}
         </TextReveal>
       </div>
     </section>

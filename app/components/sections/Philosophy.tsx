@@ -1,5 +1,12 @@
 import TextReveal from "../TextReveal";
 
+const philosophy = `
+    From crafting fluid animations to architecting scalable databases, I
+    build end-to-end solutions designed to make an impact. Every line of
+    code, every interaction, every decision engineered to deliver
+    results that matter.
+`;
+
 const Philosophy = () => {
   return (
     <section className="section-padding py-32">
@@ -9,9 +16,7 @@ const Philosophy = () => {
           type="words"
           className="text-center text-2xl font-medium leading-relaxed text-foreground-muted md:text-3xl lg:text-4xl"
         >
-          Every pixel matters. From the database schema in PostgreSQL to the
-          animation frame in GSAP, I ensure every layer of the application is
-          optimized for performance and experience.
+          {philosophy}
         </TextReveal>
       </div>
     </section>
