@@ -2,28 +2,23 @@
 
 import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useMemo } from "react";
-import { blogs } from "../data";
+import { PortableText } from "next-sanity";
+import { SanityBlog } from "@/sanity/lib/types";
 
-export default function BlogDetail() {
-  const params = useParams();
-  const slug = params.slug as string;
+interface BlogDetailProps {
+  blog: SanityBlog;
+}
 
-  const blog = useMemo(() => {
-    return blogs.find((b) => b.slug === slug);
-  }, [slug]);
-
-  if (!blog) {
-    return (
-      <main className="flex min-h-screen flex-col items-center justify-center p-24">
-        <h1 className="mb-4 text-4xl font-bold">Article Not Found</h1>
-        <Link href="/blogs" className="text-primary hover:underline">
-          Back to Articles
-        </Link>
-      </main>
-    );
-  }
+export default function BlogDetail({ blog }: BlogDetailProps) {
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(date);
+  };
 
   return (
     <main className="min-h-screen w-full bg-background text-foreground animate-in fade-in duration-500">
@@ -52,7 +47,7 @@ export default function BlogDetail() {
             </span>
             <span className="flex items-center gap-1.5">
               <Calendar size={14} />
-              {blog.date}
+              {formatDate(blog.date)}
             </span>
             {blog.readTime && (
               <span className="flex items-center gap-1.5">
@@ -86,8 +81,8 @@ export default function BlogDetail() {
 
         {/* Content */}
         <article className="prose prose-lg prose-invert max-w-none text-foreground-muted prose-headings:font-display prose-headings:text-foreground prose-a:text-primary prose-strong:text-foreground-emphasis">
-          {blog.content ? (
-            <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+          {blog.content && blog.content.length > 0 ? (
+            <PortableText value={blog.content} />
           ) : (
             <div className="space-y-4">
               <p>
@@ -125,7 +120,7 @@ export default function BlogDetail() {
             Related Topics
           </h4>
           <div className="flex flex-wrap gap-2">
-            {blog.tags.map((tag) => (
+            {blog.tags?.map((tag) => (
               <span
                 key={tag}
                 className="rounded-full border border-border bg-surface px-3 py-1 text-sm font-medium text-foreground-muted transition-colors hover:border-border-hover hover:text-foreground cursor-default"
@@ -139,3 +134,4 @@ export default function BlogDetail() {
     </main>
   );
 }
+

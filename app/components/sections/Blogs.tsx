@@ -3,103 +3,35 @@ import gsap from "gsap";
 import { ArrowUpRight, BookOpen, Clock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useRef } from "react";
-
-interface Blog {
-  title: string;
-  description: string;
-  date: string;
-  category: string;
-  tags: string[];
-  link?: string;
-  readTime?: string;
-}
+import { useLanguage } from "@/app/context/LanguageContext";
+import { SanityBlog } from "@/sanity/lib/types";
 
 interface BlogsProps {
+  blogs: SanityBlog[];
   limit?: number;
   showAnimations?: boolean;
 }
 
-const Blogs: React.FC<BlogsProps> = ({ limit, showAnimations = true }) => {
+const Blogs: React.FC<BlogsProps> = ({ blogs, limit, showAnimations = true }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const panelsRef = useRef<(HTMLDivElement | null)[]>([]);
   const router = useRouter();
+  const { language } = useLanguage();
 
   const t = useMemo(
     () => ({
-      label: "Blog",
-      title: "Thoughts & Insights",
+      label: language === "en" ? "Blog" : "Blog",
+      title: language === "en" ? "Thoughts & Insights" : "Pensamientos e Ideas",
       buttons: {
-        read: "Read Article",
-        viewAll: "View All Articles",
+        read: language === "en" ? "Read Article" : "Leer Artículo",
+        viewAll: language === "en" ? "View All Articles" : "Ver Todos",
       },
-      items: [
-        {
-          title: "Building Scalable APIs with NestJS",
-          description:
-            "A comprehensive guide to architecting robust RESTful APIs using NestJS, covering dependency injection, modular architecture, and best practices for enterprise applications.",
-          date: "2024",
-          category: "Backend",
-          tags: ["NestJS", "TypeScript", "API Design", "Architecture"],
-          link: "#",
-          readTime: "8 min",
-        },
-        {
-          title: "Mastering React Performance Optimization",
-          description:
-            "Deep dive into React performance optimization techniques, including memoization, code splitting, lazy loading, and profiling strategies for large-scale applications.",
-          date: "2024",
-          category: "Frontend",
-          tags: ["React", "Performance", "Optimization", "JavaScript"],
-          link: "#",
-          readTime: "12 min",
-        },
-        {
-          title: "TypeScript Patterns for Modern Development",
-          description:
-            "Exploring advanced TypeScript patterns, type safety strategies, and how to leverage the type system to build more maintainable and error-free applications.",
-          date: "2024",
-          category: "TypeScript",
-          tags: ["TypeScript", "Best Practices", "Type Safety", "Patterns"],
-          link: "#",
-          readTime: "10 min",
-        },
-        {
-          title: "Database Design Principles",
-          description:
-            "Understanding relational database design, normalization, indexing strategies, and how to design schemas that scale with your application's growth.",
-          date: "2023",
-          category: "Database",
-          tags: ["PostgreSQL", "Database Design", "SQL", "Architecture"],
-          link: "#",
-          readTime: "15 min",
-        },
-        {
-          title: "GraphQL vs REST: Choosing the Right API",
-          description:
-            "A practical comparison between GraphQL and REST APIs, exploring use cases, trade-offs, and when to choose each approach for your project.",
-          date: "2023",
-          category: "API",
-          tags: ["GraphQL", "REST", "API Design", "Comparison"],
-          link: "#",
-          readTime: "7 min",
-        },
-        {
-          title: "Modern State Management in React",
-          description:
-            "Exploring state management solutions from Context API to Zustand and Jotai, helping you choose the right tool for your React application's needs.",
-          date: "2023",
-          category: "Frontend",
-          tags: ["React", "State Management", "Zustand", "Context API"],
-          link: "#",
-          readTime: "9 min",
-        },
-      ],
     }),
-    []
+    [language]
   );
 
-  const blogsToShow = limit ? t.items.slice(0, limit) : t.items;
-  const hasMoreBlogs = limit && t.items.length > limit;
+  const blogsToShow = limit ? blogs.slice(0, limit) : blogs;
+  const hasMoreBlogs = limit && blogs.length > limit;
 
   const headerRef = useRef<HTMLDivElement>(null);
 
@@ -166,7 +98,14 @@ const Blogs: React.FC<BlogsProps> = ({ limit, showAnimations = true }) => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, [t, showAnimations]);
+  }, [blogs, showAnimations]);
+
+  // Format date for display
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.getFullYear().toString();
+  };
 
   return (
     <section
@@ -187,10 +126,10 @@ const Blogs: React.FC<BlogsProps> = ({ limit, showAnimations = true }) => {
 
       {/* Stacked Panels */}
       <div className="relative z-10 pb-20">
-        {blogsToShow.map((blog: Blog, idx: number) => {
+        {blogsToShow.map((blog, idx) => {
           return (
             <div
-              key={idx}
+              key={blog._id || idx}
               ref={(el) => {
                 panelsRef.current[idx] = el;
               }}
@@ -202,7 +141,7 @@ const Blogs: React.FC<BlogsProps> = ({ limit, showAnimations = true }) => {
                 <div className="relative z-20 flex w-full flex-col justify-center p-8 md:w-1/2 md:p-12 lg:p-16">
                   {/* Meta */}
                   <div className="mb-6 flex items-center gap-3 text-xs font-medium uppercase tracking-widest text-foreground-subtle">
-                    <span>{blog.date}</span>
+                    <span>{formatDate(blog.date)}</span>
                     <span className="h-1 w-1 rounded-full bg-foreground-subtle" />
                     <span>{blog.category}</span>
                     {blog.readTime && (
@@ -217,7 +156,10 @@ const Blogs: React.FC<BlogsProps> = ({ limit, showAnimations = true }) => {
                   </div>
 
                   {/* Title */}
-                  <h3 className="mb-4 font-display text-3xl font-bold tracking-tight text-foreground md:text-4xl lg:text-5xl">
+                  <h3
+                    className="mb-4 font-display text-3xl font-bold tracking-tight text-foreground md:text-4xl lg:text-5xl cursor-pointer hover:text-primary transition-colors"
+                    onClick={() => router.push(`/blogs/${blog.slug}`)}
+                  >
                     {blog.title}
                   </h3>
 
@@ -228,7 +170,7 @@ const Blogs: React.FC<BlogsProps> = ({ limit, showAnimations = true }) => {
 
                   {/* Tags */}
                   <div className="mb-10 flex flex-wrap gap-2">
-                    {blog.tags.map((tag: string, tIdx: number) => (
+                    {blog.tags?.map((tag: string, tIdx: number) => (
                       <span
                         key={tIdx}
                         className="rounded-full border border-border bg-surface-elevated px-3 py-1.5 text-xs font-medium text-foreground-muted"
@@ -240,20 +182,16 @@ const Blogs: React.FC<BlogsProps> = ({ limit, showAnimations = true }) => {
 
                   {/* CTA */}
                   <div className="flex items-center gap-4">
-                    {blog.link && (
-                      <a
-                        href={blog.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-primary group flex items-center gap-2"
-                      >
-                        <span>{t.buttons.read}</span>
-                        <ArrowUpRight
-                          size={16}
-                          className="transition-transform group-hover:rotate-45"
-                        />
-                      </a>
-                    )}
+                    <button
+                      onClick={() => router.push(`/blogs/${blog.slug}`)}
+                      className="btn-primary group flex items-center gap-2"
+                    >
+                      <span>{t.buttons.read}</span>
+                      <ArrowUpRight
+                        size={16}
+                        className="transition-transform group-hover:rotate-45"
+                      />
+                    </button>
                   </div>
                 </div>
 

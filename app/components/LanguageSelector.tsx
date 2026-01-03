@@ -2,16 +2,20 @@
 
 import { ChevronDown, Globe } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from "../context/LanguageContext";
 
 const languages = [
-  { code: "en", label: "English", flag: "🇺🇸" },
-  { code: "es", label: "Español", flag: "🇪🇸" },
+  { code: "en" as const, label: "English", flag: "🇺🇸" },
+  { code: "es" as const, label: "Español", flag: "🇪🇸" },
 ];
 
 export default function LanguageSelector() {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState(languages[0]);
+  const { language, setLanguage } = useLanguage();
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const currentLang =
+    languages.find((l) => l.code === language) || languages[0];
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -28,11 +32,9 @@ export default function LanguageSelector() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLanguageChange = (lang: (typeof languages)[0]) => {
-    setCurrentLang(lang);
+  const handleLanguageChange = (lang: (typeof languages)[number]) => {
+    setLanguage(lang.code);
     setIsOpen(false);
-    // Here you would implement actual language switching logic
-    // e.g., using next-intl, i18next, or similar
   };
 
   return (
