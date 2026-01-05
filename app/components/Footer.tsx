@@ -205,7 +205,7 @@ const Footer = () => {
   return (
     <footer
       id="contact"
-      className="relative section-padding bg-background py-24 transition-colors duration-300"
+      className="relative section-padding bg-background py-10 transition-colors duration-300"
     >
       {/* Section Header */}
       {pathname === "/" && (

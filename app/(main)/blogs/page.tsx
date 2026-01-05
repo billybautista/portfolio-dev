@@ -1,9 +1,15 @@
+import { getBlogs } from "@/sanity/lib/fetch";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { getBlogs } from "@/sanity/lib/fetch";
+import { notFound } from "next/navigation";
 import BlogsList from "./BlogsList";
 
 export default async function BlogsPage() {
+  // Hide blogs in production
+  if (process.env.NODE_ENV === "production") {
+    notFound();
+  }
+
   const blogs = await getBlogs();
 
   return (

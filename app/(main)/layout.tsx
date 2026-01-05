@@ -1,6 +1,6 @@
-import { LanguageProvider } from "../context/LanguageContext";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import { LanguageProvider } from "../context/LanguageContext";
 
 export default function MainLayout({
   children,
@@ -10,8 +10,8 @@ export default function MainLayout({
   return (
     <LanguageProvider>
       <Navbar />
-      <main className="min-h-screen mx-auto w-full">
-        <div className="bg-background min-h-screen transition-colors duration-400">
+      <main className="mx-auto w-full">
+        <div className="bg-background transition-colors duration-400">
           {children}
           <Footer />
         </div>
@@ -19,4 +19,3 @@ export default function MainLayout({
     </LanguageProvider>
   );
 }
-
