@@ -4,6 +4,7 @@ import {
   Folder,
   Github,
   Linkedin,
+  Loader2,
   LucideIcon,
   RefreshCw,
   Send,
@@ -12,7 +13,7 @@ import {
 import { usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
-type Step = "email" | "name" | "message" | "completed";
+type Step = "email" | "name" | "message" | "sending" | "completed" | "error";
 
 interface HistoryItem {
   type: Step;
@@ -55,6 +56,7 @@ const Footer = () => {
   const [currentTime, setCurrentTime] = useState<string>("");
   const [emailError, setEmailError] = useState<boolean>(false);
   const [hasInteracted, setHasInteracted] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
@@ -95,7 +97,30 @@ const Footer = () => {
     return emailRegex.test(email);
   };
 
-  const handleNextStep = () => {
+  const submitForm = async (data: typeof formData) => {
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to send message");
+      }
+
+      setStep("completed");
+    } catch (error) {
+      console.error("Contact form error:", error);
+      setErrorMessage(
+        error instanceof Error ? error.message : "Failed to send message"
+      );
+      setStep("error");
+    }
+  };
+
+  const handleNextStep = async () => {
     if (!inputValue.trim()) return;
 
     const currentAnswer = inputValue.trim();
@@ -124,13 +149,16 @@ const Footer = () => {
       setStep("message");
     } else if (step === "message") {
       promptText = "Awesome, now tell us how we can assist you today.";
-      setFormData((prev) => ({ ...prev, message: currentAnswer }));
+      const finalFormData = { ...formData, message: currentAnswer };
+      setFormData(finalFormData);
       setHistory((prev) => [
         ...prev,
         { type: "message", prompt: promptText, answer: currentAnswer },
       ]);
-      setStep("completed");
-      console.log("Form Submitted:", { ...formData, message: currentAnswer });
+      setStep("sending");
+      setInputValue("");
+      await submitForm(finalFormData);
+      return;
     }
 
     setInputValue("");
@@ -143,6 +171,7 @@ const Footer = () => {
     setInputValue("");
     setEmailError(false);
     setHasInteracted(false);
+    setErrorMessage("");
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -242,6 +271,44 @@ const Footer = () => {
                 </div>
               ))}
 
+              {/* Sending */}
+              {step === "sending" && (
+                <div className="mt-6 rounded-lg border border-blue-500/30 bg-blue-500/5 p-4">
+                  <div className="flex items-center gap-3 text-blue-600 dark:text-blue-400">
+                    <Loader2 size={20} className="animate-spin" />
+                    <span className="font-semibold">Sending message...</span>
+                  </div>
+                  <div className="mt-2 pl-8 text-sm text-foreground-subtle">
+                    Connecting to server...
+                  </div>
+                </div>
+              )}
+
+              {/* Error */}
+              {step === "error" && (
+                <div className="mt-6 rounded-lg border border-red-500/30 bg-red-500/5 p-4">
+                  <div className="mb-2 flex items-center gap-3 text-red-600 dark:text-red-400">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/20">
+                      <span className="text-sm">✗</span>
+                    </div>
+                    <span className="font-semibold">Error sending message</span>
+                  </div>
+                  <div className="pl-9 text-sm text-foreground-subtle">
+                    {errorMessage || "Process exited with code 1."}
+                  </div>
+                  <button
+                    onClick={handleCancel}
+                    className="group mt-6 flex items-center gap-2 pl-9 font-mono text-xs text-foreground-muted transition-colors hover:text-foreground"
+                  >
+                    <RefreshCw
+                      size={12}
+                      className="transition-transform duration-500 group-hover:rotate-180"
+                    />
+                    <span>./retry-session.sh</span>
+                  </button>
+                </div>
+              )}
+
               {/* Completed */}
               {step === "completed" && (
                 <div className="mt-6 rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-4">
@@ -271,7 +338,7 @@ const Footer = () => {
             </div>
 
             {/* Input Area */}
-            {step !== "completed" && (
+            {step !== "completed" && step !== "sending" && step !== "error" && (
               <div className="p-2">
                 <div className="rounded-xl border border-border bg-surface-elevated pb-3 pt-4 px-2 md:px-3">
                   <div className="flex flex-col">
