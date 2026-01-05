@@ -209,7 +209,7 @@ const Footer = () => {
     >
       {/* Section Header */}
       {pathname === "/" && (
-        <div className="mb-16">
+        <div className="mb-10">
           <span className="section-label mb-4 block">Contact</span>
           <h2 className="section-title text-4xl text-foreground md:text-5xl">
             Let&apos;s get in touch
@@ -219,7 +219,7 @@ const Footer = () => {
 
       {/* Terminal Container */}
       {pathname === "/" && (
-        <div className="mx-auto mb-24 w-full max-w-4xl">
+        <div className="mx-auto mb-10 w-full max-w-4xl">
           <div className="card overflow-hidden font-mono text-sm leading-normal md:text-[15px]">
             {/* Window Title Bar */}
             <div className="flex h-12 items-center justify-between border-b border-border bg-surface-elevated px-4">

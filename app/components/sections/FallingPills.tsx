@@ -10,22 +10,18 @@ interface FallingPillsProps {
 }
 
 const tags = [
-  "React",
-  "Next.js",
-  "TypeScript",
-  "Node.js",
-  "Tailwind",
-  "GSAP",
-  "PostgreSQL",
-  "Three.js",
-  "Design",
-  "Performance",
-  "AWS",
-  "Docker",
-  "UX/UI",
-  "Clean Code",
-  "Scalability",
+  "Full-Stack Engineering",
+  "End-to-End Development",
+  "System Design",
   "API Design",
+  "Data Modeling",
+  "Performance Optimization",
+  "Scalable Systems",
+  "User Experience",
+  "Backend Architecture",
+  "Frontend Architecture",
+  "Code Maintainability",
+  "Product Thinking",
 ];
 
 // Monochromatic, sophisticated color palette
@@ -277,7 +273,7 @@ const FallingPills: React.FC<FallingPillsProps> = ({ triggerRef }) => {
               return (
                 <div
                   key={i}
-                  className={`absolute left-0 top-0 inline-block select-none whitespace-nowrap rounded-full border px-6 py-3 text-lg font-medium opacity-0 shadow-sm transition-shadow will-change-transform hover:shadow-md md:px-8 md:py-3 md:text-xl ${color.bg} ${color.border} ${color.text}`}
+                  className={`absolute left-0 top-0 inline-block select-none whitespace-nowrap rounded-full border px-6 py-3 text-lg font-medium opacity-0 shadow-sm transition-shadow will-change-transform hover:shadow-md md:px-10 md:py-4 md:text-2xl ${color.bg} ${color.border} ${color.text}`}
                 >
                   {tag}
                 </div>
