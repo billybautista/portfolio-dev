@@ -1,6 +1,7 @@
 "use client";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./LanguageSelector";
@@ -8,17 +9,33 @@ import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const { t } = useTranslation();
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
   const sectionElementsRef = useRef<
     Map<string, { element: HTMLElement; ratio: number }>
   >(new Map());
 
+  // Check if we're on the home page
+  const isHomePage = pathname === "/";
+
   const navLinks = [
     { href: "/", label: t("nav.home", "Home"), id: "home" },
-    { href: "#about", label: t("nav.about", "About"), id: "about" },
-    { href: "#projects", label: t("nav.projects", "Work"), id: "projects" },
-    { href: "#contact", label: t("nav.contact", "Contact"), id: "contact" },
+    {
+      href: isHomePage ? "#about" : "/#about",
+      label: t("nav.about", "About"),
+      id: "about",
+    },
+    {
+      href: isHomePage ? "#projects" : "/#projects",
+      label: t("nav.projects", "Work"),
+      id: "projects",
+    },
+    {
+      href: isHomePage ? "#contact" : "/#contact",
+      label: t("nav.contact", "Contact"),
+      id: "contact",
+    },
   ];
 
   useEffect(() => {
@@ -135,6 +152,13 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
+                    onClick={(e) => {
+                      // If not on home page and clicking a section link, scroll after navigation
+                      if (!isHomePage && link.id !== "home") {
+                        e.preventDefault();
+                        window.location.href = link.href;
+                      }
+                    }}
                     className={`relative whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors ${
                       isActive
                         ? "text-foreground"
@@ -185,7 +209,14 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(e) => {
+                  setIsMobileMenuOpen(false);
+                  // If not on home page and clicking a section link, scroll after navigation
+                  if (!isHomePage && link.id !== "home") {
+                    e.preventDefault();
+                    window.location.href = link.href;
+                  }
+                }}
                 className={`relative font-display text-3xl font-bold transition-all duration-300 ${
                   isActive
                     ? "text-foreground"
