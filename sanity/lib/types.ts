@@ -37,6 +37,7 @@ export interface SanityProject {
   link: string | null;
   repo: string | null;
   media?: ProjectMedia;
+  isHidden?: boolean;
   content?: {
     en?: PortableTextBlock[];
     es?: PortableTextBlock[];
