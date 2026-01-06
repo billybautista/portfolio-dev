@@ -1,10 +1,10 @@
 "use client";
+import { SanityBlog } from "@/sanity/lib/types";
 import gsap from "gsap";
 import { ArrowUpRight, BookOpen, Clock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useRef } from "react";
-import { useLanguage } from "@/app/context/LanguageContext";
-import { SanityBlog } from "@/sanity/lib/types";
+import { useTranslation } from "react-i18next";
 
 interface BlogsProps {
   blogs: SanityBlog[];
@@ -12,22 +12,27 @@ interface BlogsProps {
   showAnimations?: boolean;
 }
 
-const Blogs: React.FC<BlogsProps> = ({ blogs, limit, showAnimations = true }) => {
+const Blogs: React.FC<BlogsProps> = ({
+  blogs,
+  limit,
+  showAnimations = true,
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const panelsRef = useRef<(HTMLDivElement | null)[]>([]);
   const router = useRouter();
-  const { language } = useLanguage();
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
 
-  const t = useMemo(
+  const labels = useMemo(
     () => ({
-      label: language === "en" ? "Blog" : "Blog",
-      title: language === "en" ? "Thoughts & Insights" : "Pensamientos e Ideas",
+      label: t("blog.label", "Blog"),
+      title: t("blog.title", "Thoughts & Insights"),
       buttons: {
-        read: language === "en" ? "Read Article" : "Leer Artículo",
-        viewAll: language === "en" ? "View All Articles" : "Ver Todos",
+        read: t("blog.read", "Read Article"),
+        viewAll: t("blog.viewAll", "View All Articles"),
       },
     }),
-    [language]
+    [t, language]
   );
 
   const blogsToShow = limit ? blogs.slice(0, limit) : blogs;
@@ -118,9 +123,9 @@ const Blogs: React.FC<BlogsProps> = ({ blogs, limit, showAnimations = true }) =>
         ref={headerRef}
         className="section-padding z-0 bg-background pt-32 transition-colors duration-300 md:sticky md:top-0"
       >
-        <span className="section-label mb-4 block">{t.label}</span>
+        <span className="section-label mb-4 block">{labels.label}</span>
         <h2 className="section-title max-w-2xl text-4xl text-foreground md:text-5xl">
-          {t.title}
+          {labels.title}
         </h2>
       </div>
 
@@ -186,7 +191,7 @@ const Blogs: React.FC<BlogsProps> = ({ blogs, limit, showAnimations = true }) =>
                       onClick={() => router.push(`/blogs/${blog.slug}`)}
                       className="btn-primary group flex items-center gap-2"
                     >
-                      <span>{t.buttons.read}</span>
+                      <span>{labels.buttons.read}</span>
                       <ArrowUpRight
                         size={16}
                         className="transition-transform group-hover:rotate-45"
@@ -223,7 +228,7 @@ const Blogs: React.FC<BlogsProps> = ({ blogs, limit, showAnimations = true }) =>
               onClick={() => router.push("/blogs")}
               className="btn-primary group flex items-center gap-3 text-base"
             >
-              <span>{t.buttons.viewAll}</span>
+              <span>{labels.buttons.viewAll}</span>
               <ArrowUpRight
                 size={18}
                 className="transition-transform group-hover:rotate-45"

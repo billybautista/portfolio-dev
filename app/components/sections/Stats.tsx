@@ -1,14 +1,23 @@
 "use client";
 import React, { useRef } from "react";
+import { useTranslation } from "react-i18next";
 
-const Stats: React.FC = () => {
+import Counter from "../Counter";
+
+interface StatsProps {
+  homeViews?: number;
+  projectCount?: number;
+}
+
+const Stats: React.FC<StatsProps> = ({ homeViews = 0, projectCount = 0 }) => {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const stats = [
-    { value: "15k+", label: "Page Views" },
-    { value: "4+", label: "Years Experience" },
-    { value: "8+", label: "Projects Shipped" },
-    { value: "5+", label: "Happy Clients" },
+    { value: homeViews, label: t("stats.views", "Page Views") },
+    { value: 4, label: t("stats.experience", "Years Experience") },
+    { value: projectCount, label: t("stats.projects", "Projects Shipped") },
+    { value: 5, label: t("stats.clients", "Happy Clients") },
   ];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -20,7 +29,10 @@ const Stats: React.FC = () => {
   };
 
   return (
-    <section id="stats" className="relative w-full bg-background transition-colors duration-300">
+    <section
+      id="stats"
+      className="relative w-full bg-background transition-colors duration-300"
+    >
       <div
         ref={containerRef}
         className="grid grid-cols-2 border-y border-border md:grid-cols-4"
@@ -42,7 +54,7 @@ const Stats: React.FC = () => {
             />
 
             <h3 className="relative z-10 mb-2 font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl">
-              {stat.value}
+              <Counter value={stat.value} suffix="+" />
             </h3>
             <p className="relative z-10 text-xs font-medium uppercase tracking-widest text-foreground-subtle">
               {stat.label}

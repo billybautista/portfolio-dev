@@ -1,11 +1,11 @@
 "use client";
 
-import { useLanguage } from "@/app/context/LanguageContext";
 import { urlFor } from "@/sanity/lib/image";
 import { SanityProject } from "@/sanity/lib/types";
 import { ArrowUpRight, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 interface ProjectCardProps {
   project: SanityProject;
@@ -68,16 +68,17 @@ export default function ProjectCard({
   project,
   size = "default",
 }: ProjectCardProps) {
-  const { language } = useLanguage();
+  const { t, i18n } = useTranslation();
+  const language = (i18n.language as "en" | "es") || "en";
 
   const getDescription = () => {
     return project.description?.[language] || project.description?.en || "";
   };
 
-  const t = {
-    demo: language === "en" ? "Live Demo" : "Ver Demo",
-    code: language === "en" ? "Source" : "Código",
-    details: language === "en" ? "View Details" : "Ver Detalles",
+  const labels = {
+    demo: t("projects.demo", "Live Demo"),
+    code: t("projects.code", "Source"),
+    details: t("projects.details", "View Details"),
   };
 
   const isLarge = size === "large";
@@ -205,7 +206,7 @@ export default function ProjectCard({
           <span>{project.date}</span>
           <span className="h-1 w-1 rounded-full bg-foreground-subtle" />
           <span className={getStatusColor(project.status)}>
-            {project.status}
+            {t(`projects.status.${project.status}`, project.status)}
           </span>
         </div>
 
@@ -256,7 +257,7 @@ export default function ProjectCard({
             href={`/projects/${project.slug}`}
             className={`btn-primary group/btn flex items-center gap-2 ${isLarge ? "text-sm sm:text-base" : ""}`}
           >
-            <span>{t.details}</span>
+            <span>{labels.details}</span>
             <ArrowUpRight
               size={16}
               className="transition-transform group-hover/btn:rotate-45"
@@ -270,7 +271,7 @@ export default function ProjectCard({
               rel="noopener noreferrer"
               className={`btn-secondary flex items-center gap-2 ${isLarge ? "hidden sm:flex" : ""}`}
             >
-              <span>{t.demo}</span>
+              <span>{labels.demo}</span>
               <ArrowUpRight size={16} />
             </a>
           )}
@@ -283,7 +284,7 @@ export default function ProjectCard({
               className={`btn-secondary flex items-center gap-2 ${isLarge ? "hidden sm:flex" : ""}`}
             >
               <Github size={16} />
-              <span>{t.code}</span>
+              <span>{labels.code}</span>
             </a>
           )}
         </div>

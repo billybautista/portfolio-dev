@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Step = "email" | "name" | "message" | "sending" | "completed" | "error";
 
@@ -44,6 +45,7 @@ const socialLinks: SocialLink[] = [
 ];
 
 const Footer = () => {
+  const { t } = useTranslation();
   const pathname = usePathname();
   const [step, setStep] = useState<Step>("email");
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -132,7 +134,10 @@ const Footer = () => {
         return;
       }
       setEmailError(false);
-      promptText = "Could you share your email with me?";
+      promptText = t(
+        "footer.prompts.email",
+        "Could you share your email with me?"
+      );
       setFormData((prev) => ({ ...prev, email: currentAnswer }));
       setHistory((prev) => [
         ...prev,
@@ -140,7 +145,7 @@ const Footer = () => {
       ]);
       setStep("name");
     } else if (step === "name") {
-      promptText = "Great! And may I know your name?";
+      promptText = t("footer.prompts.name", "Great! And may I know your name?");
       setFormData((prev) => ({ ...prev, name: currentAnswer }));
       setHistory((prev) => [
         ...prev,
@@ -148,7 +153,10 @@ const Footer = () => {
       ]);
       setStep("message");
     } else if (step === "message") {
-      promptText = "Awesome, now tell us how we can assist you today.";
+      promptText = t(
+        "footer.prompts.message",
+        "Awesome, now tell us how we can assist you today."
+      );
       const finalFormData = { ...formData, message: currentAnswer };
       setFormData(finalFormData);
       setHistory((prev) => [
@@ -210,9 +218,11 @@ const Footer = () => {
       {/* Section Header */}
       {pathname === "/" && (
         <div className="mb-10">
-          <span className="section-label mb-4 block">Contact</span>
+          <span className="section-label mb-4 block">
+            {t("footer.contact", "Contact")}
+          </span>
           <h2 className="section-title text-4xl text-foreground md:text-5xl">
-            Let&apos;s get in touch
+            {t("footer.title", "Let's get in touch")}
           </h2>
         </div>
       )}
@@ -276,10 +286,12 @@ const Footer = () => {
                 <div className="mt-6 rounded-lg border border-blue-500/30 bg-blue-500/5 p-4">
                   <div className="flex items-center gap-3 text-blue-600 dark:text-blue-400">
                     <Loader2 size={20} className="animate-spin" />
-                    <span className="font-semibold">Sending message...</span>
+                    <span className="font-semibold">
+                      {t("footer.status.sending", "Sending message...")}
+                    </span>
                   </div>
                   <div className="mt-2 pl-8 text-sm text-foreground-subtle">
-                    Connecting to server...
+                    {t("footer.status.connecting", "Connecting to server...")}
                   </div>
                 </div>
               )}
@@ -291,10 +303,13 @@ const Footer = () => {
                     <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/20">
                       <span className="text-sm">✗</span>
                     </div>
-                    <span className="font-semibold">Error sending message</span>
+                    <span className="font-semibold">
+                      {t("footer.status.error", "Error sending message")}
+                    </span>
                   </div>
                   <div className="pl-9 text-sm text-foreground-subtle">
-                    {errorMessage || "Process exited with code 1."}
+                    {errorMessage ||
+                      t("footer.status.processExitedError", "Process exited with code 1.")}
                   </div>
                   <button
                     onClick={handleCancel}
@@ -317,11 +332,14 @@ const Footer = () => {
                       <span className="text-sm">✓</span>
                     </div>
                     <span className="font-semibold">
-                      Message sent successfully!
+                      {t("footer.status.success", "Message sent successfully!")}
                     </span>
                   </div>
                   <div className="pl-9 text-sm text-foreground-subtle">
-                    Process exited with code 0. Session closed.
+                    {t(
+                      "footer.status.sessionClosed",
+                      "Process exited with code 0. Session closed."
+                    )}
                   </div>
                   <button
                     onClick={handleCancel}
@@ -350,10 +368,20 @@ const Footer = () => {
                       </div>
                       <div className="font-normal text-foreground text-sm">
                         {step === "email" &&
-                          "Could you share your email with me?"}
-                        {step === "name" && "Great! And may I know your name?"}
+                          t(
+                            "footer.prompts.email",
+                            "Could you share your email with me?"
+                          )}
+                        {step === "name" &&
+                          t(
+                            "footer.prompts.name",
+                            "Great! And may I know your name?"
+                          )}
                         {step === "message" &&
-                          "Awesome, now tell us how we can assist you today."}
+                          t(
+                            "footer.prompts.message",
+                            "Awesome, now tell us how we can assist you today."
+                          )}
                       </div>
                     </div>
 
@@ -375,10 +403,10 @@ const Footer = () => {
                           onKeyDown={handleKeyDown}
                           placeholder={
                             step === "email"
-                              ? "john@example.com"
+                              ? t("footer.placeholders.email", "john@example.com")
                               : step === "name"
-                                ? "John Doe"
-                                : "Type your message..."
+                                ? t("footer.placeholders.name", "John Doe")
+                                : t("footer.placeholders.message", "Type your message...")
                           }
                           className={`w-full resize-none bg-transparent text-foreground outline-none border-none placeholder:text-foreground-subtle ${
                             step === "message"
@@ -393,7 +421,7 @@ const Footer = () => {
                     {/* Error */}
                     {emailError && step === "email" && (
                       <div className="mt-2 px-1 font-mono text-xs text-red-500">
-                        zsh: invalid email format
+                        {t("footer.invalidEmailFormat", "zsh: invalid email format")}
                       </div>
                     )}
 
@@ -403,11 +431,20 @@ const Footer = () => {
                     >
                       {step !== "message" && (
                         <div className="flex w-fit items-center gap-2 rounded-md border border-border bg-surface py-1 px-2 text-[10px] text-foreground-muted">
-                          Press{" "}
-                          <span className="mx-0.5 rounded bg-border px-1 py-0.5 text-foreground-muted">
-                            Enter
-                          </span>{" "}
-                          to continue
+                          {t("footer.pressEnter", "Press Enter to continue")
+                            .split(/(Enter|Intro)/i)
+                            .map((part, i) =>
+                              /^(Enter|Intro)$/i.test(part) ? (
+                                <span
+                                  key={i}
+                                  className="mx-0.5 rounded bg-border px-1 py-0.5 text-foreground-muted"
+                                >
+                                  {part}
+                                </span>
+                              ) : (
+                                <span key={i}>{part}</span>
+                              )
+                            )}
                         </div>
                       )}
 
@@ -417,14 +454,14 @@ const Footer = () => {
                             onClick={handleCancel}
                             className="rounded px-3 py-1.5 text-xs text-foreground-muted transition-colors hover:bg-border hover:text-foreground"
                           >
-                            Cancel
+                            {t("footer.cancel", "Cancel")}
                           </button>
                           <button
                             onClick={handleNextStep}
                             className="flex items-center gap-1.5 rounded bg-accent px-3 py-1.5 text-xs font-medium text-background transition-colors hover:bg-accent-hover"
                           >
                             <Send size={12} />
-                            <span>Send</span>
+                            <span>{t("footer.send", "Send")}</span>
                           </button>
                         </div>
                       )}
@@ -442,7 +479,7 @@ const Footer = () => {
         <div className="flex flex-col items-center gap-4 text-xs text-foreground-subtle md:flex-row md:gap-6">
           <span>© {new Date().getFullYear()}</span>
           <span className="hidden h-1 w-1 rounded-full bg-border md:block" />
-          <span>Designed by Billy Bautista</span>
+          <span>{t("footer.designedBy", "Designed by Billy Bautista")}</span>
         </div>
 
         <div className="flex items-center gap-6">

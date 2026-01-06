@@ -1,17 +1,22 @@
 "use client";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Marquee: React.FC = () => {
-  const words = [
-    "BUILD",
-    "INNOVATE",
-    "DESIGN",
-    "CREATE",
-    "OPTIMIZE",
-    "SCALE",
-    "DELIVER",
-    "ITERATE",
-  ];
+  const { t } = useTranslation();
+  const words = t("marquee.words", {
+    returnObjects: true,
+    defaultValue: [
+      "BUILD",
+      "INNOVATE",
+      "DESIGN",
+      "CREATE",
+      "OPTIMIZE",
+      "SCALE",
+      "DELIVER",
+      "ITERATE",
+    ],
+  }) as string[];
 
   return (
     <div className="w-full border-y border-border bg-surface py-6 overflow-hidden transition-colors duration-300">

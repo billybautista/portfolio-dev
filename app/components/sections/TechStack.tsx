@@ -2,6 +2,7 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 import DjangoIcon from "@/public/icons/django.svg";
 import ExpressIcon from "@/public/icons/expressjs.svg";
@@ -18,15 +19,14 @@ import PythonIcon from "@/public/icons/python.svg";
 import ReactIcon from "@/public/icons/react.svg";
 import ReactQueryIcon from "@/public/icons/reactquery.svg";
 import SanityIcon from "@/public/icons/sanity.svg";
-import StrapiIcon from "@/public/icons/strapi.svg";
 import SupabaseIcon from "@/public/icons/supabase.svg";
 import TailwindIcon from "@/public/icons/tailwindcss.svg";
-import TypeORMIcon from "@/public/icons/typeorm.svg";
 import TSIcon from "@/public/icons/typescript.svg";
 
 import Image from "next/image";
 
 const TechStack = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -48,9 +48,7 @@ const TechStack = () => {
     { name: "Python", icon: PythonIcon },
     { name: "Django", icon: DjangoIcon },
     { name: "Plasmo", icon: PlasmoIcon, invertDark: true },
-    { name: "Strapi", icon: StrapiIcon },
     { name: "Sanity", icon: SanityIcon, invertDark: true },
-    { name: "TypeORM", icon: TypeORMIcon },
   ];
 
   useGSAP(() => {
@@ -88,34 +86,36 @@ const TechStack = () => {
       className="section-padding bg-background py-32 transition-colors duration-300"
     >
       <div className="mb-16">
-        <span className="section-label mb-4 block">Tech Stack</span>
+        <span className="section-label mb-4 block">
+          {t("techStack.label", "Tech Stack")}
+        </span>
         <h2 className="section-title text-4xl text-foreground md:text-5xl">
-          Tools I use to build
+          {t("techStack.title", "Tools I use to build")}
         </h2>
       </div>
 
       <div
         ref={gridRef}
-        className="grid grid-cols-4 gap-4 md:grid-cols-5 lg:grid-cols-10"
+        className="max-w-6xl mx-auto grid grid-cols-3 gap-4 md:grid-cols-6"
       >
         {icons.map((item, idx) => (
           <div
             key={idx}
-            className="group flex aspect-square cursor-pointer flex-col items-center justify-center rounded-2xl border border-border bg-surface p-4 transition-all duration-300 hover:border-border-hover hover:bg-surface-elevated"
+            className="group relative flex aspect-square cursor-pointer flex-col items-center justify-center rounded-2xl border border-border bg-surface p-4 transition-all duration-300 hover:border-border-hover hover:bg-surface-elevated"
             title={item.name}
           >
-            <div className="flex h-10 w-10 items-center justify-center transition-transform duration-300 group-hover:scale-110 md:h-12 md:w-12">
+            <div className="flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-2 md:flex-1">
               <Image
                 src={item.icon}
                 alt={item.name}
-                width={48}
-                height={48}
-                className={`h-8 w-8 object-contain transition-all duration-300 md:h-10 md:w-10 ${
+                width={30}
+                height={30}
+                className={`h-8 w-8 object-contain md:h-12 md:w-12 ${
                   item.invertDark ? "dark:invert" : ""
                 }`}
               />
             </div>
-            <span className="mt-2 text-center text-[10px] font-medium text-foreground-subtle opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:text-xs">
+            <span className="mt-2 text-center text-[10px] font-medium text-foreground-subtle dark:text-white md:absolute md:bottom-10 md:mt-0 md:opacity-0 md:translate-y-2 transition-all duration-300 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:text-sm">
               {item.name}
             </span>
           </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, Syne } from "next/font/google";
 import GSAPProvider from "./components/GSAPProvider";
+import I18nProvider from "./components/I18nProvider";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -104,7 +105,9 @@ export default function RootLayout({
       <body
         className={`${outfit.variable} ${syne.variable} antialiased bg-background text-foreground`}
       >
-        <GSAPProvider>{children}</GSAPProvider>
+        <I18nProvider>
+          <GSAPProvider>{children}</GSAPProvider>
+        </I18nProvider>
       </body>
     </html>
   );

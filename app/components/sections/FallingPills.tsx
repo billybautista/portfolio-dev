@@ -4,25 +4,11 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Matter from "matter-js";
 import React, { useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 interface FallingPillsProps {
   triggerRef?: React.RefObject<HTMLElement>;
 }
-
-const tags = [
-  "Full-Stack Engineering",
-  "End-to-End Development",
-  "System Design",
-  "API Design",
-  "Data Modeling",
-  "Performance Optimization",
-  "Scalable Systems",
-  "User Experience",
-  "Backend Architecture",
-  "Frontend Architecture",
-  "Code Maintainability",
-  "Product Thinking",
-];
 
 // Monochromatic, sophisticated color palette
 const colors = [
@@ -44,8 +30,25 @@ const colors = [
 ];
 
 const FallingPills: React.FC<FallingPillsProps> = ({ triggerRef }) => {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
+
+  const tags = t("fallingPills.tags", {
+    returnObjects: true,
+    defaultValue: [
+      "Full-Stack Engineering",
+      "End-to-End Development",
+      "API Design",
+      "Data Modeling",
+      "Performance Optimization",
+      "User Experience",
+      "Backend Architecture",
+      "Frontend Architecture",
+      "Code Maintainability",
+      "Product Thinking",
+    ],
+  }) as string[];
 
   useGSAP(
     () => {
@@ -254,9 +257,11 @@ const FallingPills: React.FC<FallingPillsProps> = ({ triggerRef }) => {
     <div className="border-y border-border">
       <section className="relative h-[600px] w-full overflow-hidden bg-background transition-colors duration-300">
         <div className="pointer-events-none absolute left-0 top-10 z-0 w-full text-center">
-          <span className="section-label mb-4 block">Interests & Skills</span>
+          <span className="section-label mb-4 block">
+            {t("fallingPills.label", "Interests & Skills")}
+          </span>
           <h2 className="section-title text-3xl text-foreground md:text-5xl">
-            Drag & Explore
+            {t("fallingPills.title", "Drag & Explore")}
           </h2>
         </div>
 
@@ -273,7 +278,7 @@ const FallingPills: React.FC<FallingPillsProps> = ({ triggerRef }) => {
               return (
                 <div
                   key={i}
-                  className={`absolute left-0 top-0 inline-block select-none whitespace-nowrap rounded-full border px-6 py-3 text-lg font-medium opacity-0 shadow-sm transition-shadow will-change-transform hover:shadow-md md:px-10 md:py-4 md:text-2xl ${color.bg} ${color.border} ${color.text}`}
+                  className={`text-sm absolute left-0 top-0 inline-block select-none whitespace-nowrap rounded-full border px-4 py-2 font-medium opacity-0 shadow-sm transition-shadow will-change-transform hover:shadow-md md:px-10 md:py-4 md:text-2xl ${color.bg} ${color.border} ${color.text}`}
                 >
                   {tag}
                 </div>

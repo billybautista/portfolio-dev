@@ -1,10 +1,11 @@
 "use client";
 
-import { useLanguage } from "@/app/context/LanguageContext";
+/* eslint-disable react-hooks/exhaustive-deps */
 import { SanityProject } from "@/sanity/lib/types";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
+import { useTranslation } from "react-i18next";
 import ProjectCard from "../ProjectCard";
 
 interface ProjectsProps {
@@ -14,13 +15,12 @@ interface ProjectsProps {
 
 const Projects: React.FC<ProjectsProps> = ({ projects, limit }) => {
   const panelsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const { language } = useLanguage();
+  const { t } = useTranslation();
 
-  const t = {
-    label: language === "en" ? "Projects" : "Proyectos",
-    title: language === "en" ? "Selected Work" : "Trabajo Seleccionado",
-    viewAll:
-      language === "en" ? "View All Projects" : "Ver Todos los Proyectos",
+  const labels = {
+    label: t("projects.label", "Projects"),
+    title: t("projects.title", "Selected Work"),
+    viewAll: t("projects.viewAll", "View All Projects"),
   };
 
   const projectsToShow = limit ? projects.slice(0, limit) : projects;
@@ -30,9 +30,9 @@ const Projects: React.FC<ProjectsProps> = ({ projects, limit }) => {
     <section id="projects" className="relative w-full bg-background">
       {/* Section Header */}
       <div className="section-padding bg-background pt-32 transition-colors duration-300">
-        <span className="section-label mb-4 block">{t.label}</span>
+        <span className="section-label mb-4 block">{labels.label}</span>
         <h2 className="section-title max-w-2xl text-4xl text-foreground md:text-5xl">
-          {t.title}
+          {labels.title}
         </h2>
       </div>
 
@@ -57,7 +57,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects, limit }) => {
               href="/projects"
               className="btn-primary group flex items-center gap-3 text-base"
             >
-              <span>{t.viewAll}</span>
+              <span>{labels.viewAll}</span>
               <ArrowUpRight
                 size={18}
                 className="transition-transform group-hover:rotate-45"

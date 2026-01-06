@@ -1,7 +1,12 @@
+"use client";
+
 import { ArrowLeft, Home } from "lucide-react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 export default function NotFound() {
+  const { t } = useTranslation();
+
   return (
     <main className="relative flex w-full flex-col items-center justify-center bg-background text-foreground transition-colors duration-300">
       {/* Grid pattern overlay */}
@@ -17,7 +22,7 @@ export default function NotFound() {
 
         {/* Title */}
         <h2 className="section-title mb-10 text-center text-3xl text-foreground md:text-4xl lg:text-5xl">
-          Page Not Found
+          {t("notFound.title", "Page Not Found")}
         </h2>
 
         {/* CTA Buttons */}
@@ -27,7 +32,7 @@ export default function NotFound() {
               size={18}
               className="transition-transform group-hover:scale-110"
             />
-            <span>Back to Home</span>
+            <span>{t("projects.backToHome", "Back to Home")}</span>
           </Link>
           <Link
             href="/#projects"
@@ -37,7 +42,7 @@ export default function NotFound() {
               size={18}
               className="transition-transform group-hover:-translate-x-1"
             />
-            <span>View Projects</span>
+            <span>{t("projects.viewProjects", "View Projects")}</span>
           </Link>
         </div>
 
@@ -51,4 +56,5 @@ export default function NotFound() {
     </main>
   );
 }
+
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLanguage } from "@/app/context/LanguageContext";
+import { usePageViews } from "@/app/hooks/usePageViews";
 import { urlFor } from "@/sanity/lib/image";
 import { SanityProject } from "@/sanity/lib/types";
 import {
@@ -13,6 +13,7 @@ import {
 import { PortableText } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 interface ProjectDetailProps {
   project: SanityProject;
@@ -73,7 +74,11 @@ const getEmbedUrl = (
 };
 
 export default function ProjectDetail({ project }: ProjectDetailProps) {
-  const { language } = useLanguage();
+  const { t, i18n } = useTranslation();
+  const language = (i18n.language as "en" | "es") || "en";
+
+  // Track page views
+  usePageViews(`/projects/${project.slug}`);
 
   const getDescription = () => {
     return project.description?.[language] || project.description?.en || "";
@@ -157,7 +162,9 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
         {/* Header Section */}
         <header className="mb-16">
           <div className="mb-8 flex items-center justify-between border-b border-border/50 pb-8">
-            <span className="section-label">Project Details</span>
+            <span className="section-label">
+              {t("projects.projectDetails", "Project Details")}
+            </span>
             <Link
               href="/projects"
               className="group flex items-center gap-2 rounded-full border border-border bg-surface/50 px-4 py-2 text-sm font-medium text-foreground-muted transition-all hover:bg-surface hover:text-foreground"
@@ -166,7 +173,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                 size={16}
                 className="transition-transform group-hover:-translate-x-1"
               />
-              Back to Projects
+              {t("projects.back", "Back to Projects")}
             </Link>
           </div>
 
@@ -177,7 +184,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
               )}`}
             >
               <CheckCircle2 size={12} />
-              {project.status}
+              {t(`projects.status.${project.status}`, project.status)}
             </span>
             <span className="flex items-center gap-1.5 text-sm text-foreground-muted">
               <Calendar size={14} />
@@ -201,7 +208,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                 rel="noopener noreferrer"
                 className="btn-primary flex items-center gap-2"
               >
-                <span>Visit Project</span>
+                <span>{t("projects.visit", "Visit Project")}</span>
                 <ArrowUpRight size={18} />
               </a>
             )}
@@ -213,7 +220,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                 className="btn-secondary flex items-center gap-2"
               >
                 <Github size={18} />
-                <span>Source Code</span>
+                <span>{t("projects.code", "Source Code")}</span>
               </a>
             )}
           </div>
@@ -235,7 +242,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           {/* Tech Stack */}
           <div className="lg:col-span-1">
             <h3 className="mb-4 font-display text-xl font-bold text-foreground">
-              Technologies
+              {t("projects.technologies", "Technologies")}
             </h3>
             <div className="flex flex-wrap gap-2">
               {project.tags?.map((tag) => (
@@ -253,7 +260,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           <div className="lg:col-span-2 space-y-8">
             <div>
               <h3 className="mb-4 font-display text-xl font-bold text-foreground">
-                {language === "en" ? "About the Project" : "Sobre el Proyecto"}
+                {t("projects.about", "About the Project")}
               </h3>
               <div className="prose prose-lg prose-invert max-w-none text-foreground-muted prose-headings:font-display prose-headings:text-foreground prose-strong:text-foreground-emphasis prose-ul:list-disc prose-li:marker:text-foreground-subtle">
                 {project.content?.[language] ? (
@@ -262,9 +269,10 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                   <PortableText value={project.content.en} />
                 ) : (
                   <p className="text-foreground-muted italic">
-                    {language === "en"
-                      ? "No detailed content available yet."
-                      : "Contenido detallado no disponible aún."}
+                    {t(
+                      "projects.noContent",
+                      "No detailed content available yet."
+                    )}
                   </p>
                 )}
               </div>

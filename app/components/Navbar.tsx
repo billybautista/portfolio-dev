@@ -2,22 +2,24 @@
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import LanguageSelector from "./LanguageSelector";
 import ThemeToggle from "./ThemeToggle";
 
-const navLinks = [
-  { href: "/", label: "Home", id: "home" },
-  { href: "#about", label: "About", id: "about" },
-  { href: "#projects", label: "Work", id: "projects" },
-  { href: "#contact", label: "Contact", id: "contact" },
-];
-
 export default function Navbar() {
+  const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
   const sectionElementsRef = useRef<
     Map<string, { element: HTMLElement; ratio: number }>
   >(new Map());
+
+  const navLinks = [
+    { href: "/", label: t("nav.home", "Home"), id: "home" },
+    { href: "#about", label: t("nav.about", "About"), id: "about" },
+    { href: "#projects", label: t("nav.projects", "Work"), id: "projects" },
+    { href: "#contact", label: t("nav.contact", "Contact"), id: "contact" },
+  ];
 
   useEffect(() => {
     // Use Intersection Observer for accurate section detection

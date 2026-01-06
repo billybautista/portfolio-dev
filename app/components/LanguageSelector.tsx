@@ -2,7 +2,7 @@
 
 import { ChevronDown, Globe } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useLanguage } from "../context/LanguageContext";
+import { useTranslation } from "react-i18next";
 
 const languages = [
   { code: "en" as const, label: "English", flag: "🇺🇸" },
@@ -11,11 +11,15 @@ const languages = [
 
 export default function LanguageSelector() {
   const [isOpen, setIsOpen] = useState(false);
-  const { language, setLanguage } = useLanguage();
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const { i18n } = useTranslation();
+
+  // Use 'en' as default if language is not yet initialized or detected
+  const currentLanguageCode = i18n.language || "en";
 
   const currentLang =
-    languages.find((l) => l.code === language) || languages[0];
+    languages.find((l) => l.code === currentLanguageCode) || languages[0];
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -33,7 +37,7 @@ export default function LanguageSelector() {
   }, []);
 
   const handleLanguageChange = (lang: (typeof languages)[number]) => {
-    setLanguage(lang.code);
+    i18n.changeLanguage(lang.code);
     setIsOpen(false);
   };
 
@@ -42,7 +46,7 @@ export default function LanguageSelector() {
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-10 items-center gap-2 rounded-full border border-border bg-surface px-3 text-sm font-medium text-foreground-muted transition-all hover:border-border-hover hover:text-foreground"
+        className="flex h-10 items-center gap-2 rounded-full border border-border bg-surface px-3 text-sm font-medium text-foreground-muted transition-all hover:border-border-hover hover:text-foreground cursor-pointer"
         aria-label="Select language"
       >
         <Globe size={16} />
@@ -70,7 +74,7 @@ export default function LanguageSelector() {
             <button
               key={lang.code}
               onClick={() => handleLanguageChange(lang)}
-              className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
+              className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors cursor-pointer ${
                 currentLang.code === lang.code
                   ? "bg-accent/10 text-foreground font-medium"
                   : "text-foreground-muted hover:bg-surface-elevated hover:text-foreground"

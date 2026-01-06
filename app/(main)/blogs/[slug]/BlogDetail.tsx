@@ -1,9 +1,9 @@
 "use client";
 
-import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
-import Link from "next/link";
-import { PortableText } from "next-sanity";
 import { SanityBlog } from "@/sanity/lib/types";
+import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
+import { PortableText } from "next-sanity";
+import Link from "next/link";
 
 interface BlogDetailProps {
   blog: SanityBlog;
@@ -134,6 +134,3 @@ export default function BlogDetail({ blog }: BlogDetailProps) {
     </main>
   );
 }
-
-
-
