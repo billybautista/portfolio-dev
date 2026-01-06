@@ -1,0 +1,125 @@
+{
+  "hero": {
+    "role": "Ingeniero de Software",
+    "available": "Disponible para nuevos proyectos",
+    "description": "Creando experiencias digitales elegantes a través de código limpio y diseño cuidadoso. Full Stack Engineer con capacidad para trabajar tanto en frontend como en backend, especializado en construir aplicaciones web rápidas y escalables.",
+    "viewWork": "Ver proyectos",
+    "contact": "Contactame",
+    "scroll": "Scroll"
+  },
+  "stats": {
+    "views": "Vistas",
+    "projects": "Proyectos",
+    "clients": "Clientes",
+    "experience": "Años de Experiencia"
+  },
+  "about": {
+    "title": "Acerca de Mí",
+    "description": "Soy un Ingeniero Full Stack con 4 años de experiencia, especializado en el ecosistema JavaScript. Desarrollo backends escalables con Nest.js y TypeScript, frontends modernos con React y Next.js, y aplicaciones móviles utilizando React Native."
+  },
+  "nav": {
+    "home": "Inicio",
+    "projects": "Proyectos",
+    "about": "Acerca de mí",
+    "contact": "Contacto",
+    "blog": "Blog"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "contact": "Contacto",
+    "title": "Pongámonos en contacto",
+    "prompts": {
+      "email": "¿Cuál es tu correo electrónico?",
+      "name": "¿Cuál es tu nombre?",
+      "message": "Buenísimo, contame cómo puedo ayudarte hoy."
+    },
+    "status": {
+      "sending": "Enviando mensaje...",
+      "connecting": "Conectando al servidor...",
+      "error": "Error al enviar el mensaje",
+      "success": "¡Mensaje enviado con éxito!",
+      "sessionClosed": "Proceso terminado con código 0. Sesión cerrada.",
+      "processExitedError": "Proceso terminado con código 1."
+    },
+    "designedBy": "Diseñado por Billy Bautista",
+    "cancel": "Cancelar",
+    "send": "Enviar",
+    "pressEnter": "Presiona Enter para continuar",
+    "placeholders": {
+      "email": "juan@ejemplo.com",
+      "name": "Juan Pérez",
+      "message": "Escribe tu mensaje..."
+    },
+    "invalidEmailFormat": "zsh: formato de correo inválido"
+  },
+  "projects": {
+    "label": "Proyectos",
+    "title": "Proyectos seleccionados",
+    "selectedWorkLabel": "Proyectos seleccionados que muestran mi experiencia",
+    "allProjects": "Todos los Proyectos",
+    "viewAll": "Ver Todos los Proyectos",
+    "viewProjects": "Ver Proyectos",
+    "demo": "Ver Demo",
+    "code": "Código",
+    "details": "Ver Detalles",
+    "projectDetails": "Detalles del Proyecto",
+    "back": "Volver a Proyectos",
+    "backToHome": "Volver al Inicio",
+    "visit": "Visitar Proyecto",
+    "about": "Sobre el Proyecto",
+    "technologies": "Tecnologías",
+    "noContent": "Contenido detallado no disponible aún.",
+    "status": {
+      "Completed": "Completado",
+      "In Progress": "En Progreso",
+      "Coming Soon": "Próximamente"
+    }
+  },
+  "blog": {
+    "label": "Blog",
+    "title": "Pensamientos e Ideas",
+    "blogLabel": "Pensamientos, ideas y análisis técnicos profundos",
+    "blogArticles": "Artículos del Blog",
+    "read": "Leer Artículo",
+    "viewAll": "Ver Todos los Artículos"
+  },
+  "techStack": {
+    "label": "Stack Tecnológico",
+    "title": "Herramientas que uso para construir"
+  },
+  "philosophy": {
+    "label": "Filosofía",
+    "description": "Desde crear animaciones fluidas hasta diseñar bases de datos escalables, construyo soluciones de extremo a extremo diseñadas para generar impacto. Cada línea de código, cada interacción, cada decisión diseñada para entregar resultados que importan."
+  },
+  "marquee": {
+    "words": [
+      "CONSTRUIR",
+      "INNOVAR",
+      "DISEÑAR",
+      "CREAR",
+      "OPTIMIZAR",
+      "ESCALAR",
+      "ENTREGAR",
+      "ITERAR"
+    ]
+  },
+  "fallingPills": {
+    "label": "Intereses y Habilidades",
+    "title": "Arrastra y Explora",
+    "tags": [
+      "Ingeniería Full-Stack",
+      "Desarrollo End-to-End",
+      "Diseño de API",
+      "Modelado de Datos",
+      "Optimización de Rendimiento",
+      "Experiencia de Usuario",
+      "Arquitectura Backend",
+      "Arquitectura Frontend",
+      "Mantenibilidad de Código",
+      "Pensamiento de Producto"
+    ]
+  },
+  "notFound": {
+    "title": "Página No Encontrada"
+  }
+}

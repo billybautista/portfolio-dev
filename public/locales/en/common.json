@@ -1,0 +1,125 @@
+{
+  "hero": {
+    "role": "Software Engineer",
+    "available": "Available for new projects",
+    "description": "Crafting elegant digital experiences through clean code and thoughtful design. Full Stack Engineer with the ability to work across both frontend and backend, specializing in building fast, scalable web applications.",
+    "viewWork": "View projects",
+    "contact": "Get in touch",
+    "scroll": "Scroll"
+  },
+  "stats": {
+    "views": "Views",
+    "projects": "Projects",
+    "clients": "Clients",
+    "experience": "Years Experience"
+  },
+  "about": {
+    "title": "About Me",
+    "description": "I am a Full Stack Engineer with 4 years of experience, specializing in the JavaScript ecosystem. I build scalable backends with Nest.js and TypeScript, modern frontends with React and Next.js, and mobile applications using React Native."
+  },
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "about": "About",
+    "contact": "Contact",
+    "blog": "Blog"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "contact": "Contact",
+    "title": "Let's get in touch",
+    "prompts": {
+      "email": "Could you share your email with me?",
+      "name": "Great! And may I know your name?",
+      "message": "Awesome! Now tell me how I can assist you today."
+    },
+    "status": {
+      "sending": "Sending message...",
+      "connecting": "Connecting to server...",
+      "error": "Error sending message",
+      "success": "Message sent successfully!",
+      "sessionClosed": "Process exited with code 0. Session closed.",
+      "processExitedError": "Process exited with code 1."
+    },
+    "designedBy": "Designed by Billy Bautista",
+    "cancel": "Cancel",
+    "send": "Send",
+    "pressEnter": "Press Enter to continue",
+    "placeholders": {
+      "email": "john@example.com",
+      "name": "John Doe",
+      "message": "Type your message..."
+    },
+    "invalidEmailFormat": "zsh: invalid email format"
+  },
+  "projects": {
+    "label": "Projects",
+    "title": "Selected Projects",
+    "selectedWorkLabel": "Selected projects showcasing my expertise",
+    "allProjects": "All Projects",
+    "viewAll": "View All Projects",
+    "viewProjects": "View Projects",
+    "demo": "Live Demo",
+    "code": "Source",
+    "details": "View Details",
+    "projectDetails": "Project Details",
+    "back": "Back to Projects",
+    "backToHome": "Back to Home",
+    "visit": "Visit Project",
+    "about": "About the Project",
+    "technologies": "Technologies",
+    "noContent": "No detailed content available yet.",
+    "status": {
+      "Completed": "Completed",
+      "In Progress": "In Progress",
+      "Coming Soon": "Coming Soon"
+    }
+  },
+  "blog": {
+    "label": "Blog",
+    "title": "Thoughts & Insights",
+    "blogLabel": "Thoughts, insights & technical deep-dives",
+    "blogArticles": "Blog Articles",
+    "read": "Read Article",
+    "viewAll": "View All Articles"
+  },
+  "techStack": {
+    "label": "Tech Stack",
+    "title": "Tools I use to build"
+  },
+  "philosophy": {
+    "label": "Philosophy",
+    "description": "From crafting fluid animations to architecting scalable databases, I build end-to-end solutions designed to make an impact. Every line of code, every interaction, every decision engineered to deliver results that matter."
+  },
+  "marquee": {
+    "words": [
+      "BUILD",
+      "INNOVATE",
+      "DESIGN",
+      "CREATE",
+      "OPTIMIZE",
+      "SCALE",
+      "DELIVER",
+      "ITERATE"
+    ]
+  },
+  "fallingPills": {
+    "label": "Interests & Skills",
+    "title": "Drag & Explore",
+    "tags": [
+      "Full-Stack Engineering",
+      "End-to-End Development",
+      "API Design",
+      "Data Modeling",
+      "Performance Optimization",
+      "User Experience",
+      "Backend Architecture",
+      "Frontend Architecture",
+      "Code Maintainability",
+      "Product Thinking"
+    ]
+  },
+  "notFound": {
+    "title": "Page Not Found"
+  }
+}
