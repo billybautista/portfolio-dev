@@ -2,6 +2,7 @@
 
 import { ArrowUpRight, BookOpen, Clock } from "lucide-react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import { SanityBlog } from "@/sanity/lib/types";
 
 interface BlogsListProps {
@@ -9,6 +10,8 @@ interface BlogsListProps {
 }
 
 export default function BlogsList({ blogs }: BlogsListProps) {
+  const { t } = useTranslation();
+  
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -81,7 +84,7 @@ export default function BlogsList({ blogs }: BlogsListProps) {
 
               {/* CTA */}
               <div className="group/btn inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-foreground-muted">
-                Read Article
+                {t("blog.read", "Read Article")}
                 <ArrowUpRight
                   size={16}
                   className="transition-transform group-hover/btn:rotate-45"

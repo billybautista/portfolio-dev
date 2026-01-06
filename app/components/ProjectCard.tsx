@@ -303,8 +303,8 @@ export default function ProjectCard({
         {/* Gradient Background (only for large) */}
         {isLarge && (
           <>
-            <div className="absolute inset-0 bg-linear-to-br from-blue-600/60 via-cyan-500/40 to-emerald-400/50" />
-            <div className="absolute inset-0 bg-linear-to-tl from-teal-500/40 via-transparent to-sky-500/30" />
+            <div className="absolute inset-0 from-border/20 via-transparent to-border/10" />
+            <div className="absolute inset-0 from-surface-elevated/30 via-transparent to-border/5" />
           </>
         )}
         {renderMedia()}

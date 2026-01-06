@@ -222,7 +222,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                 className="btn-secondary flex items-center gap-2"
               >
                 <Github size={18} />
-                <span>{t("projects.code", "Source Code")}</span>
+                <span>{t("projects.code", "Source")}</span>
               </a>
             )}
           </div>
