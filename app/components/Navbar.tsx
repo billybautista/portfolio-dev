@@ -135,7 +135,7 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`relative px-4 py-2 text-sm font-medium transition-colors ${
+                    className={`relative whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors ${
                       isActive
                         ? "text-foreground"
                         : "text-foreground-muted hover:text-foreground"

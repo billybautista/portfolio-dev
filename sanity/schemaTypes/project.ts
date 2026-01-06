@@ -30,6 +30,7 @@ export default defineType({
           { title: "Completed", value: "Completed" },
           { title: "In Progress", value: "In Progress" },
           { title: "Coming Soon", value: "Coming Soon" },
+          { title: "Maintenance", value: "Maintenance" },
         ],
         layout: "radio",
       },
@@ -135,6 +136,14 @@ export default defineType({
       description: "Hide this project from the public view",
     }),
     defineField({
+      name: "isFeatured",
+      title: "Featured Project",
+      type: "boolean",
+      initialValue: false,
+      description:
+        "Mark this project as featured to display it on the home page",
+    }),
+    defineField({
       name: "content",
       title: "Project Content",
       type: "object",
@@ -162,11 +171,12 @@ export default defineType({
       status: "status",
       date: "date",
       isHidden: "isHidden",
+      isFeatured: "isFeatured",
     },
-    prepare({ title, status, date, isHidden }) {
+    prepare({ title, status, date, isHidden, isFeatured }) {
       return {
-        title: `${isHidden ? "🚫 " : ""}${title}`,
-        subtitle: `${status} • ${date}${isHidden ? " • Hidden" : ""}`,
+        title: `${isHidden ? "🚫 " : ""}${isFeatured ? "⭐ " : ""}${title}`,
+        subtitle: `${status} • ${date}${isHidden ? " • Hidden" : ""}${isFeatured ? " • Featured" : ""}`,
       };
     },
   },

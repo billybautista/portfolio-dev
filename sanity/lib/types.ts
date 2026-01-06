@@ -27,7 +27,7 @@ export interface SanityProject {
   _id: string;
   title: string;
   slug: string;
-  status: "Completed" | "In Progress" | "Coming Soon";
+  status: "Completed" | "In Progress" | "Coming Soon" | "Maintenance";
   date: string;
   description: {
     en: string;
@@ -38,6 +38,7 @@ export interface SanityProject {
   repo: string | null;
   media?: ProjectMedia;
   isHidden?: boolean;
+  isFeatured?: boolean;
   content?: {
     en?: PortableTextBlock[];
     es?: PortableTextBlock[];

@@ -23,6 +23,9 @@ export default function HomeContent({ projects }: HomeContentProps) {
   // Count only non-hidden projects
   const visibleProjectsCount = projects.filter((p) => !p.isHidden).length;
 
+  // Filter featured projects for home page
+  const featuredProjects = projects.filter((p) => p.isFeatured && !p.isHidden);
+
   return (
     <main className="bg-background w-full min-h-screen text-foreground transition-colors duration-400">
       <Hero />
@@ -32,7 +35,7 @@ export default function HomeContent({ projects }: HomeContentProps) {
       <TechStack />
       <Philosophy />
       <FallingPills />
-      <Projects projects={projects} limit={4} />
+      <Projects projects={featuredProjects} limit={100} />
     </main>
   );
 }

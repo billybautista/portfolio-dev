@@ -104,7 +104,7 @@ const TechStack = () => {
             className="group relative flex aspect-square cursor-pointer flex-col items-center justify-center rounded-2xl border border-border bg-surface p-4 transition-all duration-300 hover:border-border-hover hover:bg-surface-elevated"
             title={item.name}
           >
-            <div className="flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-2 md:flex-1">
+            <div className="flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-2 md:flex-1 lg:flex-none xl:flex-1">
               <Image
                 src={item.icon}
                 alt={item.name}
@@ -115,7 +115,7 @@ const TechStack = () => {
                 }`}
               />
             </div>
-            <span className="mt-2 text-center text-[10px] font-medium text-foreground-subtle dark:text-white md:absolute md:bottom-10 md:mt-0 md:opacity-0 md:translate-y-2 transition-all duration-300 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:text-sm">
+            <span className="mt-2 text-center text-[10px] font-medium text-foreground-subtle dark:text-white md:absolute md:bottom-10 md:mt-0 md:opacity-0 md:translate-y-2 transition-all duration-300 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:text-sm lg:relative lg:bottom-auto lg:mt-2 lg:opacity-100 lg:translate-y-0 lg:text-xs xl:absolute xl:bottom-10 xl:mt-0 xl:opacity-0 xl:translate-y-2 xl:group-hover:translate-y-0 xl:group-hover:opacity-100 xl:text-sm">
               {item.name}
             </span>
           </div>

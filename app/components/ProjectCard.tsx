@@ -59,6 +59,8 @@ const getStatusColor = (status: string) => {
       return "text-amber-600 dark:text-amber-400";
     case "coming soon":
       return "text-blue-600 dark:text-blue-400";
+    case "maintenance":
+      return "text-purple-600 dark:text-purple-400";
     default:
       return "text-foreground-subtle";
   }

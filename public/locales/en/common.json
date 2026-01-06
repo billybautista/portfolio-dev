@@ -72,7 +72,8 @@
     "status": {
       "Completed": "Completed",
       "In Progress": "In Progress",
-      "Coming Soon": "Coming Soon"
+      "Coming Soon": "Coming Soon",
+      "Maintenance": "Maintenance"
     }
   },
   "blog": {

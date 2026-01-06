@@ -13,7 +13,8 @@ export const projectsQuery = groq`
     tags,
     link,
     repo,
-    media
+    media,
+    isFeatured
   }
 `;
 
@@ -29,6 +30,7 @@ export const projectBySlugQuery = groq`
     link,
     repo,
     media,
+    isFeatured,
     content
   }
 `;
@@ -83,7 +85,7 @@ export const blogSlugsQuery = groq`
 // ============= LIMITED QUERIES FOR HOME PAGE =============
 
 export const featuredProjectsQuery = groq`
-  *[_type == "project" && !isHidden] | order(date desc)[0...3] {
+  *[_type == "project" && !isHidden && isFeatured == true] | order(date desc)[0...4] {
     _id,
     title,
     "slug": slug.current,
@@ -93,7 +95,8 @@ export const featuredProjectsQuery = groq`
     tags,
     link,
     repo,
-    media
+    media,
+    isFeatured
   }
 `;
 

@@ -134,3 +134,4 @@ export default function BlogDetail({ blog }: BlogDetailProps) {
     </main>
   );
 }
+
